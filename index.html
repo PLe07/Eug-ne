@@ -3,159 +3,1001 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mode Combat</title>
+<title>L'Île des Savoirs — Révisions 6ᵉ d'Eugène</title>
 <style>
-body {
-font-family: Arial, sans-serif;
-background-color: #f0f0f0;
-display: flex;
-justify-content: center;
-align-items: center;
-height: 100vh;
-margin: 0;
-}
-.container {
-background: #fff;
-padding: 20px;
-border-radius: 10px;
-box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-text-align: center;
-}
-.bar {
-width: 100%;
-height: 20px;
-background: #ccc;
-border-radius: 10px;
-margin: 10px 0;
-}
-.bar-fill {
-height: 100%;
-background: #4caf50;
-border-radius: 10px;
-}
-.question {
-font-size: 1.5em;
-margin: 20px 0;
-}
-.buttons {
-display: flex;
-justify-content: space-around;
-margin: 20px 0;
-}
-.button {
-padding: 10px 20px;
-font-size: 1em;
-cursor: pointer;
-border: none;
-border-radius: 5px;
-background: #007bff;
-color: #fff;
-transition: background 0.3s;
-}
-.button:hover {
-background: #0056b3;
-}
-.timer {
-font-size: 2em;
-margin: 20px 0;
-}
+  :root{
+    --bleu:#2b6cff;--bleu2:#1746b0;--violet:#7b2ff7;--vert:#20c46b;--rouge:#ff4d5e;
+    --or:#ffc93c;--texte:#1a2140;--gris:#8a93b2;--carte:#fff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;font-family:inherit;}
+  body{font-family:-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:var(--texte);
+    background:linear-gradient(160deg,#12224f,#3a1c86 55%,#7b2ff7);min-height:100vh;padding:14px;}
+  #app{max-width:860px;margin:0 auto;}
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+  .logo{color:#fff;font-weight:800;font-size:18px;display:flex;align-items:center;gap:8px;}
+  .logo span{font-size:24px;}
+  .infos{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+  .puce{background:rgba(255,255,255,.16);color:#fff;border-radius:99px;padding:6px 12px;font-weight:800;font-size:13px;display:flex;gap:5px;align-items:center;}
+  .icobtn{background:rgba(255,255,255,.16);border:none;color:#fff;font-size:17px;width:40px;height:40px;border-radius:12px;cursor:pointer;transition:.15s;}
+  .icobtn:hover{background:rgba(255,255,255,.32);transform:translateY(-1px);}
+  .carte{background:var(--carte);border-radius:22px;padding:24px;box-shadow:0 18px 50px rgba(0,0,0,.28);}
+  .ecran{animation:pop .32s ease;}
+  @keyframes pop{from{opacity:0;transform:translateY(12px) scale(.98);}to{opacity:1;transform:none;}}
+  h1{font-size:25px;margin-bottom:6px;}h2{font-size:20px;margin-bottom:12px;}
+  .sous{color:var(--gris);margin-bottom:18px;line-height:1.5;}
+  .menu{display:grid;grid-template-columns:1fr 1fr;gap:13px;}
+  .tuile{border:none;border-radius:18px;padding:20px 16px;cursor:pointer;color:#fff;text-align:left;
+    font-size:17px;font-weight:800;transition:.15s;min-height:96px;display:flex;flex-direction:column;justify-content:space-between;gap:6px;}
+  .tuile:hover{transform:translateY(-3px);box-shadow:0 12px 26px rgba(0,0,0,.25);}
+  .tuile .emo{font-size:28px;}.tuile small{font-weight:600;opacity:.92;font-size:12px;}
+  .t-aventure{background:linear-gradient(135deg,#2b6cff,#54c8ff);}
+  .t-rush{background:linear-gradient(135deg,#ff4d5e,#ff8a5b);}
+  .t-jour{background:linear-gradient(135deg,#20c46b,#7be495);}
+  .t-boutique{background:linear-gradient(135deg,#ff8a00,#ffc93c);color:#3a2600;}
+  .t-zen{background:linear-gradient(135deg,#7b2ff7,#c072ff);}
+  .t-large{grid-column:1/-1;background:linear-gradient(135deg,#141b3d,#2b3a7a);}
+  .btn{background:var(--bleu);color:#fff;border:none;border-radius:14px;padding:13px 20px;font-size:15px;font-weight:800;cursor:pointer;transition:.15s;}
+  .btn:hover{background:var(--bleu2);transform:translateY(-2px);}
+  .btn.ghost{background:#eef1fb;color:var(--texte);}.btn.ghost:hover{background:#e2e7f7;}
+  .btn.large{width:100%;padding:15px;font-size:16px;}
+  .btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+  .row{display:flex;gap:10px;flex-wrap:wrap;}.centre{text-align:center;}
+  .badge{display:inline-block;background:#eef1fb;color:var(--bleu2);border-radius:99px;padding:5px 12px;font-size:13px;font-weight:800;}
+
+  /* Carte-monde */
+  .iles{display:grid;gap:13px;}
+  .ile{border-radius:18px;padding:16px 18px;color:#fff;cursor:pointer;transition:.15s;display:flex;align-items:center;gap:14px;position:relative;overflow:hidden;}
+  .ile:hover{transform:translateY(-2px);}
+  .ile .ico{font-size:38px;}
+  .ile .txt{flex:1;}
+  .ile .nom{font-weight:800;font-size:18px;}
+  .ile .prog{font-size:12px;opacity:.92;margin-top:2px;}
+  .ile.verrou{filter:grayscale(.7) brightness(.8);cursor:not-allowed;}
+  .ile .cadenas{font-size:26px;}
+  .chemin{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px;}
+  .noeud{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-weight:800;font-size:15px;border:3px solid #e7ebf7;background:#fff;color:var(--texte);cursor:pointer;position:relative;transition:.15s;}
+  .noeud:hover{transform:scale(1.08);}
+  .noeud.fait{background:var(--vert);color:#fff;border-color:var(--vert);}
+  .noeud.actif{border-color:var(--or);box-shadow:0 0 0 4px rgba(255,201,60,.35);}
+  .noeud.verrou{background:#eef1fb;color:#b9c0d6;cursor:not-allowed;border-color:#eef1fb;}
+  .noeud .mini{position:absolute;bottom:-14px;font-size:10px;}
+  .noeud.boss{background:linear-gradient(135deg,#ff4d5e,#7b2ff7);color:#fff;border:none;width:52px;height:52px;font-size:22px;}
+
+  /* Quiz */
+  .qtop{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;color:var(--gris);font-weight:800;font-size:13px;}
+  .barre{height:9px;background:#eef1fb;border-radius:99px;overflow:hidden;margin-bottom:14px;}
+  .barre>i{display:block;height:100%;background:linear-gradient(90deg,var(--bleu),var(--violet));width:0;transition:width .3s;}
+  .chrono{height:11px;background:#eef1fb;border-radius:99px;overflow:hidden;margin-bottom:14px;}
+  .chrono>i{display:block;height:100%;background:linear-gradient(90deg,var(--or),var(--rouge));width:100%;}
+  .question{font-size:20px;font-weight:800;line-height:1.4;margin:4px 0 16px;}
+  .choix{display:grid;gap:11px;}
+  .choix button{border:3px solid #e7ebf7;background:#fff;border-radius:14px;padding:15px;font-size:16px;text-align:left;cursor:pointer;transition:.12s;font-weight:600;color:var(--texte);}
+  .choix button:hover:not(:disabled){border-color:var(--bleu);background:#f6f9ff;}
+  .choix button.bon{border-color:var(--vert);background:#e9fbf1;color:#0d7a41;}
+  .choix button.faux{border-color:var(--rouge);background:#ffecee;color:#b1263a;}
+  .choix button.efface{opacity:.25;}
+  .explication{margin-top:14px;padding:13px 15px;border-radius:14px;background:#f3f6ff;border-left:5px solid var(--bleu);font-size:15px;line-height:1.5;display:none;}
+  .explication.bon{background:#e9fbf1;border-color:var(--vert);}.explication.faux{background:#fff3f0;border-color:var(--rouge);}
+  .powers{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+  .power{background:#eef1fb;border:none;border-radius:12px;padding:8px 12px;font-weight:800;font-size:13px;cursor:pointer;transition:.15s;}
+  .power:hover:not(:disabled){background:#e0e6fb;}.power:disabled{opacity:.4;cursor:not-allowed;}
+
+  /* Combat / boss */
+  .arene{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:6px;position:relative;}
+  .combattant{flex:1;text-align:center;}
+  .avatar{font-size:60px;line-height:1;display:inline-block;transition:transform .15s;}
+  .avatar.hit{animation:sec .4s;}
+  @keyframes sec{0%,100%{transform:none;}25%{transform:translateX(-9px) rotate(-6deg);}50%{transform:translateX(9px) rotate(6deg);}75%{transform:translateX(-5px);}}
+  .nom{font-weight:800;margin-top:4px;font-size:14px;}
+  .pv{height:15px;background:#e7ebf7;border-radius:99px;overflow:hidden;margin-top:6px;position:relative;}
+  .pv>i{display:block;height:100%;border-radius:99px;transition:width .45s cubic-bezier(.4,1.3,.5,1);}
+  .pv.hero>i{background:linear-gradient(90deg,#20c46b,#7be495);}
+  .pv.enemi>i{background:linear-gradient(90deg,#ff4d5e,#ff8a5b);}
+  .pv small{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#0e1430;}
+  .flottant{position:absolute;font-weight:900;font-size:22px;pointer-events:none;animation:monte 1s ease forwards;}
+  @keyframes monte{from{opacity:1;transform:translateY(0);}to{opacity:0;transform:translateY(-42px);}}
+  .msg{text-align:center;font-weight:800;font-size:15px;min-height:20px;margin:8px 0;}
+
+  /* Boutique */
+  .boutique{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:12px;}
+  .article{border:3px solid #eef1fb;border-radius:16px;padding:14px 8px;text-align:center;transition:.15s;}
+  .article .emo{font-size:38px;}
+  .article .titre{font-weight:800;font-size:13px;margin:4px 0;}
+  .article .perk{font-size:11px;color:var(--gris);min-height:26px;}
+  .article button{width:100%;margin-top:6px;border:none;border-radius:10px;padding:8px;font-weight:800;font-size:12px;cursor:pointer;background:var(--bleu);color:#fff;}
+  .article button:disabled{background:#e2e7f7;color:#9aa4c0;cursor:not-allowed;}
+  .article.actif{border-color:var(--vert);background:#eafbf1;}
+  .section-titre{font-weight:800;font-size:15px;margin:18px 0 8px;color:var(--texte);}
+
+  .gros-emo{font-size:66px;margin-bottom:6px;}
+  .etoiles{font-size:32px;letter-spacing:5px;margin:8px 0;}
+  .stat{font-size:38px;font-weight:900;color:var(--bleu);}
+  .foot{color:rgba(255,255,255,.72);text-align:center;font-size:12px;margin-top:14px;line-height:1.5;}
+  @media(max-width:560px){.menu{grid-template-columns:1fr;}.avatar{font-size:50px;}.question{font-size:18px;}}
 </style>
 </head>
 <body>
-<div class="container">
-<h1>Mode Combat</h1>
-<div class="bar">
-<div class="bar-fill" id="eugene-bar"></div>
-</div>
-<div class="bar">
-<div class="bar-fill" id="enemy-bar"></div>
-</div>
-<div class="question" id="question"></div>
-<div class="buttons" id="buttons"></div>
-<div class="timer" id="timer"></div>
+<div id="app">
+  <div class="topbar">
+    <div class="logo"><span id="hdr-avatar">🦸</span> L'Île des Savoirs</div>
+    <div class="infos" id="hdr-infos"></div>
+    <div class="row">
+      <button class="icobtn" id="btn-son" title="Son">🔊</button>
+      <button class="icobtn" id="btn-menu" title="Menu">🏠</button>
+    </div>
+  </div>
+  <div class="carte" id="scene"></div>
+  <div class="foot">Fait pour Eugène 💪 — Programme de 6ᵉ et primaire · Maths · Français · Sciences · Histoire-Géo · Anglais<br>
+  Astuce combat : réponds <b>juste</b> et <b>vite</b> pour frapper avant l'ennemi !</div>
 </div>
 
 <script>
-const eugeneBar = document.getElementById('eugene-bar');
-const enemyBar = document.getElementById('enemy-bar');
-const question = document.getElementById('question');
-const buttons = document.getElementById('buttons');
-const timer = document.getElementById('timer');
+/* =====================================================================
+   L'ÎLE DES SAVOIRS — jeu de révision 6ᵉ (un seul fichier, GitHub Pages)
+   ===================================================================== */
 
-let eugeneHealth = 100;
-let enemyHealth = 100;
-let eugeneAnswered = false;
-let enemyAnswered = false;
-let timeLeft = 10;
+/* ---------- BANQUE DE QUESTIONS ----------
+   {q, choix:[4], bonne (texte exact d'un choix), niveau 1|2|3, exp} */
+const QUESTIONS = {
+  maths: [
+    {q:"Combien font 7 × 8 ?",choix:["56","54","48","64"],bonne:"56",niveau:1,exp:"Table de 8 : 7×8 = 56."},
+    {q:"Combien font 9 × 6 ?",choix:["54","56","45","63"],bonne:"54",niveau:1,exp:"9×6 = 54."},
+    {q:"Combien font 6 × 7 ?",choix:["42","48","36","49"],bonne:"42",niveau:1,exp:"6×7 = 42."},
+    {q:"Combien font 8 × 8 ?",choix:["64","56","72","48"],bonne:"64",niveau:1,exp:"Le carré de 8 : 8×8 = 64."},
+    {q:"Combien font 11 × 11 ?",choix:["121","111","120","132"],bonne:"121",niveau:2,exp:"11×11 = 121."},
+    {q:"Combien font 45 + 38 ?",choix:["83","73","85","93"],bonne:"83",niveau:1,exp:"45+38 = 83."},
+    {q:"Combien font 100 − 37 ?",choix:["63","67","73","57"],bonne:"63",niveau:1,exp:"100−37 = 63."},
+    {q:"Combien font 144 ÷ 12 ?",choix:["12","14","11","24"],bonne:"12",niveau:2,exp:"12×12 = 144, donc 144÷12 = 12."},
+    {q:"Combien font 56 ÷ 7 ?",choix:["8","7","9","6"],bonne:"8",niveau:1,exp:"7×8 = 56, donc 56÷7 = 8."},
+    {q:"Quel est le double de 25 ?",choix:["50","45","52","30"],bonne:"50",niveau:1,exp:"Le double = ×2 : 25×2 = 50."},
+    {q:"Quelle est la moitié de 50 ?",choix:["25","20","30","15"],bonne:"25",niveau:1,exp:"La moitié = ÷2 : 50÷2 = 25."},
+    {q:"Quel est le triple de 20 ?",choix:["60","40","50","23"],bonne:"60",niveau:1,exp:"Le triple = ×3 : 20×3 = 60."},
+    {q:"Combien de dizaines dans 340 ?",choix:["34","3","40","304"],bonne:"34",niveau:2,exp:"340 = 34 dizaines (34×10)."},
+    {q:"Dans 4 572, quel est le chiffre des centaines ?",choix:["5","4","7","2"],bonne:"5",niveau:2,exp:"4(mille) 5(centaines) 7(dizaines) 2(unités)."},
+    {q:"Arrondir 47 à la dizaine la plus proche :",choix:["50","40","47","45"],bonne:"50",niveau:2,exp:"47 est plus proche de 50 que de 40."},
+    {q:"Combien font 3×100 + 5×10 + 2 ?",choix:["352","3502","35 2","30052"],bonne:"352",niveau:2,exp:"300 + 50 + 2 = 352."},
+    {q:"Combien font 1/2 + 1/2 ?",choix:["1","1/4","2/2 seulement","1/1"],bonne:"1",niveau:1,exp:"Deux moitiés font un entier : 1/2 + 1/2 = 1."},
+    {q:"Combien font 1/4 + 1/4 ?",choix:["1/2","2/4 seulement","1/8","1/4"],bonne:"1/2",niveau:2,exp:"1/4 + 1/4 = 2/4 = 1/2."},
+    {q:"La fraction 3/4 correspond à quel pourcentage ?",choix:["75 %","34 %","50 %","25 %"],bonne:"75 %",niveau:2,exp:"3/4 = 75/100 = 75 %."},
+    {q:"Le nombre 0,5 correspond à quelle fraction ?",choix:["1/2","1/5","5/10 seulement","1/4"],bonne:"1/2",niveau:2,exp:"0,5 = 5/10 = 1/2."},
+    {q:"Combien font 2,5 + 2,5 ?",choix:["5","4,10","5,5","4,5"],bonne:"5",niveau:1,exp:"2,5 + 2,5 = 5."},
+    {q:"Combien font 0,1 + 0,9 ?",choix:["1","0,10","0,91","0,19"],bonne:"1",niveau:2,exp:"0,1 + 0,9 = 1,0 = 1."},
+    {q:"Combien vaut 1/10 en écriture décimale ?",choix:["0,1","0,01","1,0","10"],bonne:"0,1",niveau:2,exp:"1/10 = 0,1 (un dixième)."},
+    {q:"Combien font les 3/4 de 100 ?",choix:["75","34","300","25"],bonne:"75",niveau:2,exp:"100÷4 = 25, puis 25×3 = 75."},
+    {q:"Combien font 2 + 3 × 4 ?",choix:["14","20","24","9"],bonne:"14",niveau:2,exp:"On multiplie d'abord : 3×4=12, puis 2+12 = 14."},
+    {q:"Combien font (2 + 3) × 4 ?",choix:["20","14","24","9"],bonne:"20",niveau:2,exp:"Les parenthèses d'abord : 2+3=5, puis 5×4 = 20."},
+    {q:"Combien font 10 − 2 × 3 ?",choix:["4","24","8","6"],bonne:"4",niveau:3,exp:"Multiplication d'abord : 2×3=6, puis 10−6 = 4."},
+    {q:"Combien font 50 % de 60 ?",choix:["30","50","25","60"],bonne:"30",niveau:1,exp:"50 % = la moitié : 60÷2 = 30."},
+    {q:"Combien font 10 % de 200 ?",choix:["20","10","2","100"],bonne:"20",niveau:2,exp:"10 % = ÷10 : 200÷10 = 20."},
+    {q:"Combien font 25 % de 40 ?",choix:["10","25","20","4"],bonne:"10",niveau:2,exp:"25 % = 1/4 : 40÷4 = 10."},
+    {q:"Un stylo coûte 2 €. Combien coûtent 5 stylos ?",choix:["10 €","7 €","12 €","25 €"],bonne:"10 €",niveau:1,exp:"2 € × 5 = 10 € (proportionnalité)."},
+    {q:"3 pommes coûtent 6 €. Combien coûte 1 pomme ?",choix:["2 €","3 €","6 €","1 €"],bonne:"2 €",niveau:2,exp:"6 € ÷ 3 = 2 € la pomme."},
+    {q:"La somme des angles d'un triangle vaut :",choix:["180°","90°","360°","270°"],bonne:"180°",niveau:2,exp:"Dans tout triangle, la somme des 3 angles = 180°."},
+    {q:"Combien de côtés a un carré ?",choix:["4","3","5","6"],bonne:"4",niveau:1,exp:"Le carré a 4 côtés égaux."},
+    {q:"Périmètre d'un carré de côté 5 :",choix:["20","10","25","15"],bonne:"20",niveau:2,exp:"Périmètre = 4 × côté = 4×5 = 20."},
+    {q:"Aire d'un carré de côté 4 :",choix:["16","8","12","20"],bonne:"16",niveau:2,exp:"Aire = côté × côté = 4×4 = 16."},
+    {q:"Périmètre d'un rectangle L=6, l=4 :",choix:["20","24","10","12"],bonne:"20",niveau:2,exp:"Périmètre = 2×(L+l) = 2×(6+4) = 20."},
+    {q:"Aire d'un rectangle L=6, l=4 :",choix:["24","20","10","12"],bonne:"24",niveau:2,exp:"Aire = L×l = 6×4 = 24."},
+    {q:"Un angle droit mesure :",choix:["90°","180°","45°","360°"],bonne:"90°",niveau:1,exp:"L'angle droit (le coin d'une équerre) mesure 90°."},
+    {q:"Un angle plat mesure :",choix:["180°","90°","360°","120°"],bonne:"180°",niveau:2,exp:"L'angle plat forme une ligne droite : 180°."},
+    {q:"Combien de côtés a un hexagone ?",choix:["6","5","8","7"],bonne:"6",niveau:2,exp:"Hexa = six : l'hexagone a 6 côtés."},
+    {q:"Combien de faces a un cube ?",choix:["6","8","12","4"],bonne:"6",niveau:2,exp:"Le cube a 6 faces carrées."},
+    {q:"Combien d'arêtes a un cube ?",choix:["12","6","8","10"],bonne:"12",niveau:3,exp:"Le cube a 12 arêtes (les traits)."},
+    {q:"Combien de sommets a un cube ?",choix:["8","6","12","4"],bonne:"8",niveau:3,exp:"Le cube a 8 sommets (les coins)."},
+    {q:"Aire d'un triangle de base 4 et hauteur 3 :",choix:["6","12","7","24"],bonne:"6",niveau:3,exp:"Aire = (base×hauteur)÷2 = (4×3)÷2 = 6."},
+    {q:"Le rayon d'un cercle est la moitié du…",choix:["diamètre","périmètre","rayon","centre"],bonne:"diamètre",niveau:2,exp:"Le diamètre = 2 × rayon, donc le rayon = diamètre ÷ 2."},
+    {q:"Un triangle équilatéral a combien de côtés égaux ?",choix:["3","2","4","0"],bonne:"3",niveau:2,exp:"Équilatéral = ses 3 côtés ont la même longueur."},
+    {q:"1 mètre = combien de centimètres ?",choix:["100","10","1000","50"],bonne:"100",niveau:1,exp:"1 m = 100 cm."},
+    {q:"1 kilomètre = combien de mètres ?",choix:["1000","100","10","500"],bonne:"1000",niveau:1,exp:"1 km = 1000 m."},
+    {q:"1 kilogramme = combien de grammes ?",choix:["1000","100","10","500"],bonne:"1000",niveau:1,exp:"1 kg = 1000 g."},
+    {q:"1 litre = combien de millilitres ?",choix:["1000","100","10","500"],bonne:"1000",niveau:2,exp:"1 L = 1000 mL."},
+    {q:"1 heure = combien de minutes ?",choix:["60","100","30","24"],bonne:"60",niveau:1,exp:"1 h = 60 min."},
+    {q:"2 heures = combien de minutes ?",choix:["120","60","100","200"],bonne:"120",niveau:2,exp:"2 × 60 = 120 minutes."},
+    {q:"Une demi-heure, c'est combien de minutes ?",choix:["30","15","45","60"],bonne:"30",niveau:1,exp:"La moitié de 60 min = 30 min."},
+    {q:"500 g, c'est quelle part d'un kilogramme ?",choix:["0,5 kg","5 kg","0,05 kg","2 kg"],bonne:"0,5 kg",niveau:2,exp:"500 g = la moitié de 1000 g = 0,5 kg."},
+    {q:"1,5 m, c'est combien de centimètres ?",choix:["150","15","1500","105"],bonne:"150",niveau:2,exp:"1 m = 100 cm, donc 1,5 m = 150 cm."},
+    {q:"Il fait −2 °C, puis la température monte de 5 °C. Il fait :",choix:["3 °C","−7 °C","7 °C","−3 °C"],bonne:"3 °C",niveau:3,exp:"−2 + 5 = 3 °C."},
+    {q:"Quel nombre est le plus grand : −5 ou −2 ?",choix:["−2","−5","ils sont égaux","0"],bonne:"−2",niveau:3,exp:"Sur la droite des nombres, −2 est plus proche de 0, donc plus grand."},
+    {q:"Parmi 3, 7, 8, 9, quel est le nombre pair ?",choix:["8","3","7","9"],bonne:"8",niveau:1,exp:"Un nombre pair se termine par 0,2,4,6,8. Ici : 8."},
+    {q:"Le nombre 7 est un nombre…",choix:["impair","pair","décimal","négatif"],bonne:"impair",niveau:1,exp:"7 n'est pas divisible par 2 : il est impair."},
+    {q:"Quelle est la moyenne de 4 et 6 ?",choix:["5","10","2","4,6"],bonne:"5",niveau:3,exp:"(4+6)÷2 = 10÷2 = 5."},
+    {q:"Combien font 15 × 4 ?",choix:["60","45","54","64"],bonne:"60",niveau:2,exp:"15×4 = 60."},
+    {q:"Combien font 250 + 250 ?",choix:["500","400","550","505"],bonne:"500",niveau:1,exp:"250+250 = 500."},
+    {q:"Le quart de 100, c'est :",choix:["25","50","40","10"],bonne:"25",niveau:2,exp:"100 ÷ 4 = 25."},
+    {q:"Combien font 3/3 ?",choix:["1","3","0","1/3"],bonne:"1",niveau:2,exp:"Une fraction dont le haut = le bas vaut 1."},
+    {q:"Résous : x + 5 = 12. Que vaut x ?",choix:["7","17","5","6"],bonne:"7",niveau:3,exp:"x = 12 − 5 = 7."},
+    {q:"Combien font 12 ÷ 0,5 ?",choix:["24","6","2","0,6"],bonne:"24",niveau:3,exp:"Diviser par 0,5, c'est multiplier par 2 : 12×2 = 24."},
+    {q:"Combien de minutes dans un quart d'heure ?",choix:["15","30","20","45"],bonne:"15",niveau:1,exp:"Un quart d'heure = 60÷4 = 15 min."},
+    {q:"Combien font 1000 − 1 ?",choix:["999","990","1001","909"],bonne:"999",niveau:1,exp:"1000 − 1 = 999."}
+  ],
+  francais: [
+    {q:"Dans « une belle robe », quelle est la nature de « belle » ?",choix:["adjectif","nom","verbe","adverbe"],bonne:"adjectif",niveau:2,exp:"« belle » décrit le nom « robe » : c'est un adjectif."},
+    {q:"Quelle est la nature du mot « chien » ?",choix:["nom","verbe","adjectif","adverbe"],bonne:"nom",niveau:1,exp:"« chien » désigne un animal : c'est un nom."},
+    {q:"Quelle est la nature du mot « manger » ?",choix:["verbe","nom","adjectif","adverbe"],bonne:"verbe",niveau:1,exp:"« manger » est une action à l'infinitif : un verbe."},
+    {q:"Quelle est la nature du mot « rapidement » ?",choix:["adverbe","adjectif","nom","verbe"],bonne:"adverbe",niveau:3,exp:"Il précise comment se passe l'action : c'est un adverbe."},
+    {q:"Dans « le chat », quelle est la nature de « le » ?",choix:["déterminant (article)","nom","verbe","pronom"],bonne:"déterminant (article)",niveau:2,exp:"« le » accompagne le nom : c'est un déterminant (article)."},
+    {q:"Quelle est la nature du mot « je » ?",choix:["pronom","nom","verbe","adjectif"],bonne:"pronom",niveau:2,exp:"« je » remplace la personne qui parle : un pronom personnel."},
+    {q:"Dans « sous la table », quelle est la nature de « sous » ?",choix:["préposition","adverbe","nom","verbe"],bonne:"préposition",niveau:3,exp:"« sous » relie et situe : c'est une préposition."},
+    {q:"Dans « trois chats », quelle est la nature de « trois » ?",choix:["déterminant","nom","adjectif","verbe"],bonne:"déterminant",niveau:2,exp:"« trois » indique le nombre devant le nom : déterminant numéral."},
+    {q:"Quel est le sujet dans « Le chien aboie » ?",choix:["Le chien","aboie","chien seul","rien"],bonne:"Le chien",niveau:1,exp:"Qui aboie ? → le chien : c'est le sujet."},
+    {q:"Quel est le verbe dans « Les oiseaux chantent » ?",choix:["chantent","oiseaux","Les","oiseau"],bonne:"chantent",niveau:1,exp:"Le verbe exprime l'action : « chantent »."},
+    {q:"Dans « Marie mange une pomme », quel est le COD ?",choix:["une pomme","Marie","mange","pomme mûre"],bonne:"une pomme",niveau:3,exp:"Marie mange QUOI ? → une pomme (complément d'objet direct)."},
+    {q:"« Je ___ content. » (verbe être, présent)",choix:["suis","es","est","sui"],bonne:"suis",niveau:1,exp:"Être au présent : je suis."},
+    {q:"« Tu ___ un vélo. » (verbe avoir, présent)",choix:["as","a","à","es"],bonne:"as",niveau:1,exp:"Avoir au présent : tu as."},
+    {q:"« Nous ___ à l'école. » (aller, présent)",choix:["allons","allez","allont","alons"],bonne:"allons",niveau:2,exp:"Aller au présent : nous allons."},
+    {q:"« Ils ___ dans la cour. » (jouer, présent)",choix:["jouent","joue","joues","jouons"],bonne:"jouent",niveau:1,exp:"Ils/elles → terminaison -ent : ils jouent."},
+    {q:"« Vous ___ vos devoirs. » (faire, présent)",choix:["faites","faisez","faîtes","faits"],bonne:"faites",niveau:2,exp:"Faire au présent : vous faites (irrégulier)."},
+    {q:"« Il ___ ses exercices. » (finir, présent)",choix:["finit","fini","finis","finît"],bonne:"finit",niveau:2,exp:"Finir au présent, il/elle : il finit."},
+    {q:"« Je ___ au parc hier. » (jouer, imparfait)",choix:["jouais","joue","jouerai","jouai"],bonne:"jouais",niveau:2,exp:"Imparfait, je : terminaison -ais → je jouais."},
+    {q:"Quel est le passé composé de « je mange » ?",choix:["j'ai mangé","je mangeais","je mangerai","je mangeai"],bonne:"j'ai mangé",niveau:2,exp:"Passé composé = avoir/être au présent + participe passé : j'ai mangé."},
+    {q:"« Demain, je ___ à la mer. » (aller, futur)",choix:["irai","vais","allais","irais"],bonne:"irai",niveau:3,exp:"Futur simple de aller, je : j'irai."},
+    {q:"« Elles ___ de loin. » (venir, présent)",choix:["viennent","viens","vient","venent"],bonne:"viennent",niveau:2,exp:"Venir au présent, elles : elles viennent."},
+    {q:"« Tu ___ ton temps. » (prendre, présent)",choix:["prends","prend","prens","prendre"],bonne:"prends",niveau:2,exp:"Prendre au présent, tu : tu prends."},
+    {q:"Quel est l'imparfait de « nous avons » ?",choix:["nous avions","nous avons eu","nous aurons","nous avions eu"],bonne:"nous avions",niveau:3,exp:"Avoir à l'imparfait, nous : nous avions."},
+    {q:"« Il ___ un oiseau dans le ciel. » (voir, présent)",choix:["voit","vois","voie","voix"],bonne:"voit",niveau:2,exp:"Voir au présent, il/elle : il voit."},
+    {q:"Complète : « Il ___ mangé une pomme. »",choix:["a","à","as","ah"],bonne:"a",niveau:1,exp:"« a » = verbe avoir. « à » = préposition (à la maison)."},
+    {q:"Complète : « Je vais ___ Paris. »",choix:["à","a","as","ah"],bonne:"à",niveau:1,exp:"« à » (préposition de lieu). « a » = avoir."},
+    {q:"Complète : « Mon frère ___ grand. »",choix:["est","et","es","ai"],bonne:"est",niveau:1,exp:"« est » = verbe être. « et » relie (toi et moi)."},
+    {q:"Complète : « J'aime le rouge ___ le bleu. »",choix:["et","est","es","ai"],bonne:"et",niveau:1,exp:"« et » relie deux mots. « est » = être."},
+    {q:"Complète : « Paul range ___ affaires. »",choix:["ses","ces","c'est","sais"],bonne:"ses",niveau:2,exp:"« ses » = les siennes (à lui). « ces » = celles-là."},
+    {q:"Complète : « ___ montagnes sont magnifiques ! » (on les montre)",choix:["Ces","Ses","C'est","Sais"],bonne:"Ces",niveau:3,exp:"« ces » montre (démonstratif). « ses » = possession."},
+    {q:"Complète : « Ils ___ un chien. »",choix:["ont","on","hont","onts"],bonne:"ont",niveau:1,exp:"« ont » = verbe avoir (ils ont). « on » = pronom."},
+    {q:"Complète : « ___ va au cinéma ce soir. »",choix:["On","Ont","Hon","Onh"],bonne:"On",niveau:1,exp:"« on » = pronom (on = nous). « ont » = avoir."},
+    {q:"Complète : « ___ vas-tu en vacances ? »",choix:["Où","Ou","Houx","Oux"],bonne:"Où",niveau:2,exp:"« où » (avec accent) = le lieu. « ou » = ou bien."},
+    {q:"Complète : « Tu veux du thé ___ du café ? »",choix:["ou","où","houx","oux"],bonne:"ou",niveau:2,exp:"« ou » = ou bien (un choix). « où » = le lieu."},
+    {q:"Complète : « Ils ___ très contents. »",choix:["sont","son","sons","cont"],bonne:"sont",niveau:1,exp:"« sont » = verbe être (ils sont). « son » = à lui."},
+    {q:"Complète : « ___ vélo est neuf. »",choix:["Son","Sont","Sons","Cent"],bonne:"Son",niveau:1,exp:"« son » = le sien (possession). « sont » = être."},
+    {q:"Complète : « Il ___ lave les mains. »",choix:["se","ce","ceux","ces"],bonne:"se",niveau:2,exp:"« se » devant un verbe (il se lave). « ce » devant un nom."},
+    {q:"Complète : « ___ livre est passionnant. »",choix:["Ce","Se","Ceux","Sais"],bonne:"Ce",niveau:2,exp:"« ce » devant un nom (ce livre). « se » devant un verbe."},
+    {q:"Complète : « Viens ici, reste ___ ! »",choix:["là","la","l'a","las"],bonne:"là",niveau:2,exp:"« là » (avec accent) indique le lieu. « la » = article."},
+    {q:"Complète : « Les élèves rangent ___ cartables. »",choix:["leurs","leur","l'heure","leure"],bonne:"leurs",niveau:3,exp:"Plusieurs cartables → « leurs » prend un s."},
+    {q:"Quel est le pluriel de « un cheval » ?",choix:["des chevaux","des chevals","des chevaus","des chevales"],bonne:"des chevaux",niveau:2,exp:"Les noms en -al font -aux : cheval → chevaux."},
+    {q:"Quel est le pluriel de « un journal » ?",choix:["des journaux","des journals","des journeaux","des journos"],bonne:"des journaux",niveau:2,exp:"-al → -aux : journal → journaux."},
+    {q:"Quel est le pluriel de « un bijou » ?",choix:["des bijoux","des bijous","des bijeaux","des bijou"],bonne:"des bijoux",niveau:3,exp:"Bijou fait partie des noms en -ou qui prennent -x : bijoux."},
+    {q:"Quel est le pluriel de « un nez » ?",choix:["des nez","des nezs","des néz","des nezes"],bonne:"des nez",niveau:2,exp:"Les noms en -z ne changent pas au pluriel : des nez."},
+    {q:"Quel est le féminin de « acteur » ?",choix:["actrice","acteuse","acteure","actrisse"],bonne:"actrice",niveau:2,exp:"acteur → actrice."},
+    {q:"Quel est le féminin de « un chien » ?",choix:["une chienne","une chiene","une chienète","une chate"],bonne:"une chienne",niveau:2,exp:"On double le n : chien → chienne."},
+    {q:"Accorde : « des fleurs ___ » (rouge)",choix:["rouges","rouge","rouger","rougent"],bonne:"rouges",niveau:2,exp:"L'adjectif s'accorde avec « fleurs » (pluriel) : rouges."},
+    {q:"Complète : « La lettre que j'ai ___. » (écrire)",choix:["écrite","écrit","écris","écrient"],bonne:"écrite",niveau:3,exp:"Avec avoir, le participe s'accorde avec le COD placé avant : « la lettre » → écrite."},
+    {q:"Complète : « Elle est ___ à l'école. » (partir)",choix:["partie","parti","partis","partît"],bonne:"partie",niveau:3,exp:"Avec être, le participe s'accorde avec le sujet : elle → partie."},
+    {q:"Quel est le contraire de « grand » ?",choix:["petit","gros","haut","long"],bonne:"petit",niveau:1,exp:"L'antonyme de grand est petit."},
+    {q:"Quel est le contraire de « rapide » ?",choix:["lent","vite","fort","court"],bonne:"lent",niveau:1,exp:"Le contraire de rapide est lent."},
+    {q:"Quel est le contraire de « chaud » ?",choix:["froid","tiède","brûlant","doux"],bonne:"froid",niveau:1,exp:"Le contraire de chaud est froid."},
+    {q:"Quel est un synonyme de « content » ?",choix:["heureux","triste","fatigué","fâché"],bonne:"heureux",niveau:2,exp:"Content et heureux ont le même sens (synonymes)."},
+    {q:"Quel est un synonyme de « beau » ?",choix:["joli","laid","vieux","grand"],bonne:"joli",niveau:2,exp:"Beau et joli sont des synonymes."},
+    {q:"Quel est le contraire de « commencer » ?",choix:["finir","partir","ouvrir","courir"],bonne:"finir",niveau:2,exp:"Le contraire de commencer est finir (ou terminer)."},
+    {q:"Un mot de la même famille que « dent » :",choix:["dentiste","dessin","danser","donner"],bonne:"dentiste",niveau:2,exp:"« dentiste » vient de « dent » : même famille de mots."},
+    {q:"Une phrase qui pose une question se termine par :",choix:["?","!",".","…"],bonne:"?",niveau:1,exp:"La phrase interrogative se termine par un point d'interrogation « ? »."},
+    {q:"« Quelle belle journée ! » est une phrase :",choix:["exclamative","interrogative","déclarative","impérative"],bonne:"exclamative",niveau:2,exp:"Elle exprime un sentiment fort et finit par « ! » : exclamative."},
+    {q:"« Ferme la porte. » est une phrase :",choix:["impérative","interrogative","exclamative","déclarative"],bonne:"impérative",niveau:3,exp:"Elle donne un ordre : phrase impérative (injonctive)."},
+    {q:"« Il est fort comme un lion » est une :",choix:["comparaison","question","énumération","négation"],bonne:"comparaison",niveau:3,exp:"On compare avec « comme » : c'est une comparaison."},
+    {q:"Combien de syllabes dans « chocolat » ?",choix:["3","2","4","1"],bonne:"3",niveau:2,exp:"cho-co-lat : 3 syllabes."},
+    {q:"Quel est l'infinitif de « il courait » ?",choix:["courir","courer","courrir","courre"],bonne:"courir",niveau:2,exp:"« courait » vient du verbe courir."},
+    {q:"À quel temps est « nous chantions » ?",choix:["imparfait","présent","futur","passé composé"],bonne:"imparfait",niveau:3,exp:"Terminaison -ions → imparfait."},
+    {q:"Dans « je mange », à quelle personne est le verbe ?",choix:["1re personne du singulier","2e personne","3e personne","1re du pluriel"],bonne:"1re personne du singulier",niveau:2,exp:"« je » = 1re personne du singulier."}
+  ],
+  sciences: [
+    {q:"Un animal qui se nourrit uniquement de viande est…",choix:["carnivore","herbivore","omnivore","végétarien"],bonne:"carnivore",niveau:1,exp:"Carnivore = mange de la viande (ex : le lion)."},
+    {q:"Un animal qui mange surtout de l'herbe et des plantes est…",choix:["herbivore","carnivore","omnivore","insecte"],bonne:"herbivore",niveau:1,exp:"Herbivore = mange des végétaux (ex : la vache)."},
+    {q:"Un animal qui mange de tout (plantes et viande) est…",choix:["omnivore","carnivore","herbivore","ovipare"],bonne:"omnivore",niveau:2,exp:"Omnivore = mange de tout (ex : l'être humain, l'ours)."},
+    {q:"La vache est un animal…",choix:["herbivore","carnivore","omnivore","ovipare"],bonne:"herbivore",niveau:1,exp:"Elle mange de l'herbe : c'est un herbivore."},
+    {q:"Un animal qui pond des œufs est dit…",choix:["ovipare","vivipare","carnivore","herbivore"],bonne:"ovipare",niveau:2,exp:"Ovipare = qui pond des œufs (poule, oiseau, poisson)."},
+    {q:"Un animal dont les petits naissent déjà formés est dit…",choix:["vivipare","ovipare","omnivore","herbivore"],bonne:"vivipare",niveau:3,exp:"Vivipare = les petits naissent vivants (chat, chien, humain)."},
+    {q:"La poule est un animal…",choix:["ovipare","vivipare","carnivore","insecte"],bonne:"ovipare",niveau:1,exp:"La poule pond des œufs : elle est ovipare."},
+    {q:"De quoi une plante verte a-t-elle besoin pour grandir ?",choix:["lumière et eau","de viande","d'obscurité totale","de sel seulement"],bonne:"lumière et eau",niveau:1,exp:"Une plante a besoin de lumière, d'eau (et de sels minéraux) pour pousser."},
+    {q:"Comment les plantes vertes fabriquent-elles leur nourriture ?",choix:["par la photosynthèse","en mangeant des insectes","en respirant la nuit","en buvant du lait"],bonne:"par la photosynthèse",niveau:2,exp:"Grâce à la lumière, elles font la photosynthèse."},
+    {q:"Quelle partie de la plante absorbe l'eau dans le sol ?",choix:["les racines","les feuilles","la fleur","les fruits"],bonne:"les racines",niveau:2,exp:"Les racines puisent l'eau et les sels dans le sol."},
+    {q:"Une chaîne alimentaire commence le plus souvent par…",choix:["une plante","un lion","un aigle","un serpent"],bonne:"une plante",niveau:3,exp:"Les végétaux produisent la matière : ils sont au début de la chaîne."},
+    {q:"Combien de pattes a un insecte ?",choix:["6","8","4","10"],bonne:"6",niveau:2,exp:"Tous les insectes ont 6 pattes."},
+    {q:"Combien de pattes a une araignée ?",choix:["8","6","4","10"],bonne:"8",niveau:2,exp:"L'araignée a 8 pattes : ce n'est pas un insecte, c'est un arachnide."},
+    {q:"Le papillon naît d'abord sous la forme d'une…",choix:["chenille","abeille","fourmi","graine"],bonne:"chenille",niveau:2,exp:"La chenille se transforme en papillon (métamorphose)."},
+    {q:"La grenouille est un…",choix:["amphibien","mammifère","poisson","reptile"],bonne:"amphibien",niveau:3,exp:"Elle vit dans l'eau et sur terre : c'est un amphibien."},
+    {q:"Un champignon fait-il de la photosynthèse ?",choix:["non","oui","seulement la nuit","seulement l'été"],bonne:"non",niveau:3,exp:"Le champignon n'a pas de chlorophylle : il ne fait pas de photosynthèse."},
+    {q:"Un être vivant naît, grandit, se nourrit, respire et…",choix:["se reproduit","reste immobile","fabrique du plastique","ne change jamais"],bonne:"se reproduit",niveau:2,exp:"Les êtres vivants se reproduisent (ils font des petits ou des graines)."},
+    {q:"À quoi sert principalement le squelette ?",choix:["soutenir le corps","digérer","voir","respirer"],bonne:"soutenir le corps",niveau:1,exp:"Le squelette soutient le corps et protège les organes."},
+    {q:"Combien de sens possède l'être humain ?",choix:["5","3","7","4"],bonne:"5",niveau:1,exp:"La vue, l'ouïe, l'odorat, le goût et le toucher : 5 sens."},
+    {q:"Quel organe nous permet de voir ?",choix:["l'œil","l'oreille","le nez","la langue"],bonne:"l'œil",niveau:1,exp:"L'œil est l'organe de la vue."},
+    {q:"Quel organe pompe le sang dans le corps ?",choix:["le cœur","les poumons","l'estomac","le foie"],bonne:"le cœur",niveau:1,exp:"Le cœur est une pompe qui fait circuler le sang."},
+    {q:"Grâce à quels organes respirons-nous ?",choix:["les poumons","les reins","l'estomac","le cœur"],bonne:"les poumons",niveau:2,exp:"L'air entre dans les poumons pour la respiration."},
+    {q:"À quoi servent les dents ?",choix:["mâcher les aliments","voir","entendre","respirer"],bonne:"mâcher les aliments",niveau:1,exp:"Les dents coupent et broient les aliments (début de la digestion)."},
+    {q:"Un repas équilibré doit surtout être…",choix:["varié (fruits, légumes, féculents…)","que du sucre","que de la viande","sans eau"],bonne:"varié (fruits, légumes, féculents…)",niveau:2,exp:"Manger varié apporte tout ce dont le corps a besoin."},
+    {q:"Le cerveau sert à…",choix:["commander le corps et penser","digérer","pomper le sang","filtrer l'air"],bonne:"commander le corps et penser",niveau:2,exp:"Le cerveau commande les mouvements et permet de réfléchir."},
+    {q:"Quels sont les trois états de la matière ?",choix:["solide, liquide, gaz","chaud, froid, tiède","dur, mou, mouillé","petit, moyen, grand"],bonne:"solide, liquide, gaz",niveau:1,exp:"La matière peut être solide, liquide ou gazeuse."},
+    {q:"L'eau liquide qui se transforme en glace, c'est la…",choix:["solidification","fusion","évaporation","condensation"],bonne:"solidification",niveau:2,exp:"Liquide → solide = solidification."},
+    {q:"La glace qui fond devient…",choix:["liquide","gaz","solide","vapeur"],bonne:"liquide",niveau:2,exp:"La fusion transforme le solide en liquide."},
+    {q:"Au niveau de la mer, l'eau bout à…",choix:["100 °C","0 °C","50 °C","10 °C"],bonne:"100 °C",niveau:1,exp:"L'eau bout (vaporisation) à 100 °C."},
+    {q:"L'eau pure gèle à…",choix:["0 °C","100 °C","−10 °C","10 °C"],bonne:"0 °C",niveau:1,exp:"L'eau se solidifie à 0 °C."},
+    {q:"La vapeur d'eau est de l'eau à l'état…",choix:["gazeux","liquide","solide","glacé"],bonne:"gazeux",niveau:2,exp:"La vapeur est de l'eau à l'état gazeux."},
+    {q:"Un glaçon est de l'eau à l'état…",choix:["solide","liquide","gazeux","invisible"],bonne:"solide",niveau:1,exp:"Le glaçon est de l'eau à l'état solide."},
+    {q:"Le passage de l'état liquide à l'état gazeux s'appelle…",choix:["l'évaporation","la solidification","la fusion","la fonte"],bonne:"l'évaporation",niveau:3,exp:"L'eau qui s'évapore passe de liquide à gaz (vaporisation)."},
+    {q:"Eau + sirop bien mélangés donnent un mélange…",choix:["homogène","hétérogène","solide","gazeux"],bonne:"homogène",niveau:3,exp:"On ne distingue plus les constituants : mélange homogène."},
+    {q:"Eau + huile donnent un mélange…",choix:["hétérogène","homogène","gazeux","pur"],bonne:"hétérogène",niveau:3,exp:"On voit deux couches : mélange hétérogène."},
+    {q:"L'air qui nous entoure est…",choix:["un gaz (de la matière)","du vide","un liquide","un solide"],bonne:"un gaz (de la matière)",niveau:2,exp:"L'air est de la matière : un mélange de gaz qui a une masse."},
+    {q:"Avec quel instrument mesure-t-on la température ?",choix:["un thermomètre","une balance","une règle","un chronomètre"],bonne:"un thermomètre",niveau:1,exp:"Le thermomètre mesure la température (en °C)."},
+    {q:"Avec quel instrument mesure-t-on la masse ?",choix:["une balance","un thermomètre","une règle","une horloge"],bonne:"une balance",niveau:1,exp:"La balance mesure la masse (en grammes, kilogrammes)."},
+    {q:"Quand on met du sucre dans l'eau, il…",choix:["se dissout","reste entier","devient un gaz","gèle"],bonne:"se dissout",niveau:2,exp:"Le sucre se dissout : on obtient un mélange homogène."},
+    {q:"Un liquide prend la forme…",choix:["de son récipient","d'un cube toujours","d'une boule","qu'il veut sans récipient"],bonne:"de son récipient",niveau:3,exp:"Un liquide n'a pas de forme propre : il épouse le récipient."},
+    {q:"Combien y a-t-il de saisons dans l'année ?",choix:["4","2","3","6"],bonne:"4",niveau:1,exp:"Printemps, été, automne, hiver : 4 saisons."},
+    {q:"Quelle saison vient après le printemps ?",choix:["l'été","l'hiver","l'automne","la mousson"],bonne:"l'été",niveau:1,exp:"Ordre : printemps, été, automne, hiver."},
+    {q:"La Terre tourne autour du…",choix:["Soleil","de la Lune","de Mars","des étoiles"],bonne:"Soleil",niveau:2,exp:"La Terre fait le tour du Soleil en un an."},
+    {q:"La Lune tourne autour de…",choix:["la Terre","du Soleil","de Mars","de Jupiter"],bonne:"la Terre",niveau:2,exp:"La Lune est le satellite de la Terre."},
+    {q:"Qu'est-ce qui provoque le jour et la nuit ?",choix:["la rotation de la Terre sur elle-même","les nuages","la pluie","la Lune"],bonne:"la rotation de la Terre sur elle-même",niveau:3,exp:"La Terre tourne sur elle-même en 24 h : d'où le jour et la nuit."},
+    {q:"La Terre fait un tour complet du Soleil en…",choix:["1 an","1 jour","1 mois","1 semaine"],bonne:"1 an",niveau:2,exp:"Un tour du Soleil = 1 an (365 jours)."},
+    {q:"Trier ses déchets sert surtout à…",choix:["les recycler","les cacher","les brûler dehors","faire du bruit"],bonne:"les recycler",niveau:2,exp:"Le tri permet de recycler et de protéger la planète."},
+    {q:"Quelle est une énergie renouvelable ?",choix:["l'énergie solaire","le pétrole","le charbon","le gaz"],bonne:"l'énergie solaire",niveau:3,exp:"Le Soleil est une source d'énergie renouvelable (inépuisable)."},
+    {q:"Comment s'appelle notre planète ?",choix:["la Terre","Mars","la Lune","le Soleil"],bonne:"la Terre",niveau:1,exp:"Nous vivons sur la planète Terre."},
+    {q:"Quelle étoile est la plus proche de la Terre ?",choix:["le Soleil","la Lune","l'étoile Polaire","Mars"],bonne:"le Soleil",niveau:2,exp:"Le Soleil est une étoile, la plus proche de nous."},
+    {q:"Le plastique, face au courant électrique, est…",choix:["un isolant","un conducteur","un aimant","un liquide"],bonne:"un isolant",niveau:2,exp:"Le plastique ne laisse pas passer le courant : c'est un isolant."},
+    {q:"Le métal, face au courant électrique, est…",choix:["un conducteur","un isolant","du vide","un gaz"],bonne:"un conducteur",niveau:2,exp:"Les métaux laissent passer le courant : ce sont des conducteurs."},
+    {q:"Que fournit une pile ?",choix:["de l'électricité","de l'eau","de l'air","du sable"],bonne:"de l'électricité",niveau:1,exp:"La pile fournit de l'énergie électrique au circuit."},
+    {q:"Pour allumer une lampe dans un circuit simple, il faut…",choix:["une pile et des fils","de l'eau","un aimant","du bois"],bonne:"une pile et des fils",niveau:2,exp:"Il faut une source (pile) reliée par des fils à la lampe."},
+    {q:"Le verre est fabriqué à partir de…",choix:["sable","bois","fer","plastique"],bonne:"sable",niveau:3,exp:"Le verre est fabriqué en faisant fondre du sable."},
+    {q:"Un objet en bois provient de…",choix:["l'arbre","la pierre","le pétrole","le sable"],bonne:"l'arbre",niveau:1,exp:"Le bois vient des arbres."},
+    {q:"Un aimant attire surtout…",choix:["le fer","le plastique","le bois","le verre"],bonne:"le fer",niveau:2,exp:"L'aimant attire les objets en fer (et certains métaux)."},
+    {q:"Pour couper le courant dans un circuit, on utilise…",choix:["un interrupteur","une lampe","un fil de plus","de l'eau"],bonne:"un interrupteur",niveau:2,exp:"L'interrupteur ouvre ou ferme le circuit."},
+    {q:"La lumière se déplace en ligne…",choix:["droite","courbe","zigzag","ronde"],bonne:"droite",niveau:2,exp:"Dans un milieu transparent, la lumière va en ligne droite."},
+    {q:"Une ombre se forme quand un objet…",choix:["bloque la lumière","brille","chauffe","fait du bruit"],bonne:"bloque la lumière",niveau:2,exp:"L'ombre apparaît quand un objet arrête la lumière."},
+    {q:"Recycler le papier permet surtout d'économiser…",choix:["des arbres","de l'eau salée","du plastique","du sable"],bonne:"des arbres",niveau:2,exp:"Le papier vient du bois : le recycler économise des arbres."},
+    {q:"Un solide (comme un caillou) a une forme…",choix:["propre (fixe)","qui change tout le temps","de gaz","liquide"],bonne:"propre (fixe)",niveau:2,exp:"Un solide garde sa forme, contrairement à un liquide ou un gaz."},
+    {q:"L'unité utilisée pour mesurer une température est…",choix:["le degré Celsius (°C)","le mètre","le gramme","le litre"],bonne:"le degré Celsius (°C)",niveau:2,exp:"On mesure la température en degrés Celsius (°C)."},
+    {q:"Que fait l'eau dans la nature en boucle (pluie, évaporation…) ?",choix:["le cycle de l'eau","un court-circuit","une éclipse","une marée seulement"],bonne:"le cycle de l'eau",niveau:3,exp:"Évaporation, nuages, pluie, rivières : c'est le cycle de l'eau."},
+    {q:"Le fer qui rouille au contact de l'air et de l'eau est un exemple de…",choix:["transformation","mélange homogène","fusion","évaporation"],bonne:"transformation",niveau:3,exp:"La rouille est une transformation du fer (nouvelle matière)."}
+  ],
+  histgeo: [
+    {q:"Au tout début de la Préhistoire, les premiers hommes étaient surtout…",choix:["nomades (ils se déplaçaient)","des rois","des agriculteurs","des marins"],bonne:"nomades (ils se déplaçaient)",niveau:2,exp:"Ils se déplaçaient pour chasser et cueillir : ils étaient nomades."},
+    {q:"Quelle grande découverte a permis aux hommes préhistoriques de se réchauffer et cuire ?",choix:["le feu","la roue","l'électricité","le téléphone"],bonne:"le feu",niveau:1,exp:"La maîtrise du feu fut essentielle à la Préhistoire."},
+    {q:"Au Néolithique, l'homme commence à…",choix:["cultiver la terre et élever des animaux","conduire des voitures","construire des avions","écrire des livres"],bonne:"cultiver la terre et élever des animaux",niveau:3,exp:"Le Néolithique marque le début de l'agriculture et de l'élevage."},
+    {q:"Les célèbres peintures préhistoriques se trouvent dans la grotte de…",choix:["Lascaux","Versailles","Rome","Athènes"],bonne:"Lascaux",niveau:2,exp:"La grotte de Lascaux (en France) contient des peintures préhistoriques."},
+    {q:"Les hommes préhistoriques taillaient leurs outils dans…",choix:["la pierre (le silex)","le plastique","le fer","l'or"],bonne:"la pierre (le silex)",niveau:2,exp:"Ils utilisaient surtout la pierre, comme le silex."},
+    {q:"Quelle invention marque le début de l'Histoire (fin de la Préhistoire) ?",choix:["l'écriture","la télévision","la voiture","l'ordinateur"],bonne:"l'écriture",niveau:2,exp:"L'apparition de l'écriture marque le début de l'Histoire."},
+    {q:"Dans quelle région l'écriture est-elle née ?",choix:["en Mésopotamie","en Amérique","en Australie","au pôle Nord"],bonne:"en Mésopotamie",niveau:3,exp:"L'écriture est née en Mésopotamie (actuel Irak), il y a ~5000 ans."},
+    {q:"Quel fleuve était essentiel à l'Égypte ancienne ?",choix:["le Nil","la Seine","le Rhin","l'Amazone"],bonne:"le Nil",niveau:1,exp:"Le Nil apportait l'eau et les récoltes à l'Égypte."},
+    {q:"Comment appelait-on le roi de l'Égypte ancienne ?",choix:["le pharaon","le président","l'empereur","le chevalier"],bonne:"le pharaon",niveau:1,exp:"Le roi d'Égypte était le pharaon."},
+    {q:"Les immenses tombeaux des pharaons sont…",choix:["les pyramides","les cathédrales","les châteaux forts","les temples grecs"],bonne:"les pyramides",niveau:1,exp:"Les pharaons étaient enterrés dans des pyramides."},
+    {q:"L'écriture des anciens Égyptiens s'appelle…",choix:["les hiéroglyphes","l'alphabet latin","les chiffres romains","le braille"],bonne:"les hiéroglyphes",niveau:2,exp:"Les Égyptiens écrivaient avec des hiéroglyphes (des dessins-signes)."},
+    {q:"La démocratie est née dans la cité de…",choix:["Athènes","Rome","Sparte","Le Caire"],bonne:"Athènes",niveau:3,exp:"À Athènes (Grèce), les citoyens participaient aux décisions : la démocratie."},
+    {q:"Le mot « démocratie » signifie…",choix:["le pouvoir du peuple","le pouvoir d'un roi","le pouvoir de l'armée","le pouvoir des dieux"],bonne:"le pouvoir du peuple",niveau:3,exp:"Démocratie = le peuple (démos) détient le pouvoir (kratos)."},
+    {q:"Les Jeux Olympiques sont nés dans quel pays de l'Antiquité ?",choix:["la Grèce","l'Égypte","la Chine","la Gaule"],bonne:"la Grèce",niveau:2,exp:"Les premiers Jeux Olympiques ont eu lieu en Grèce antique (Olympie)."},
+    {q:"Les Grecs de l'Antiquité croyaient en…",choix:["plusieurs dieux","un seul dieu","aucun dieu","des robots"],bonne:"plusieurs dieux",niveau:2,exp:"Les Grecs étaient polythéistes (Zeus, Athéna, Poséidon…)."},
+    {q:"Selon la légende, quelle ville rivale d'Athènes était guerrière ?",choix:["Sparte","Le Caire","Carthage","Lyon"],bonne:"Sparte",niveau:3,exp:"Sparte était une cité grecque célèbre pour ses guerriers."},
+    {q:"Selon la légende, Rome a été fondée par…",choix:["Romulus","Jules César","Cléopâtre","Vercingétorix"],bonne:"Romulus",niveau:3,exp:"La légende raconte que Romulus (et Rémus) fonda Rome."},
+    {q:"Quel célèbre général romain a été assassiné en −44 ?",choix:["Jules César","Napoléon","Alexandre","Louis XIV"],bonne:"Jules César",niveau:2,exp:"Jules César, général et homme d'État romain, fut assassiné."},
+    {q:"Les soldats de l'armée romaine s'appelaient les…",choix:["légionnaires","chevaliers","samouraïs","mousquetaires"],bonne:"légionnaires",niveau:2,exp:"Les soldats romains, organisés en légions, étaient des légionnaires."},
+    {q:"Dans quel pays actuel se trouve la ville de Rome ?",choix:["l'Italie","la Grèce","l'Espagne","l'Égypte"],bonne:"l'Italie",niveau:1,exp:"Rome est aujourd'hui la capitale de l'Italie."},
+    {q:"Pour amener l'eau dans leurs villes, les Romains construisaient des…",choix:["aqueducs","pyramides","gratte-ciels","igloos"],bonne:"aqueducs",niveau:3,exp:"Les aqueducs transportaient l'eau sur de longues distances."},
+    {q:"Quel chef gaulois a résisté à Jules César ?",choix:["Vercingétorix","Astérix","Charlemagne","Napoléon"],bonne:"Vercingétorix",niveau:2,exp:"Vercingétorix a mené la révolte des Gaulois contre César."},
+    {q:"Quel peuple vivait en Gaule avant la conquête romaine ?",choix:["les Gaulois","les Vikings","les Égyptiens","les Aztèques"],bonne:"les Gaulois",niveau:1,exp:"La Gaule était habitée par les Gaulois."},
+    {q:"Une religion qui croit en un seul dieu est dite…",choix:["monothéiste","polythéiste","athée","nomade"],bonne:"monothéiste",niveau:3,exp:"Mono = un seul : une religion monothéiste (ex : judaïsme, christianisme)."},
+    {q:"À son apogée, Rome était dirigée par un…",choix:["empereur","pharaon","chevalier","sultan"],bonne:"empereur",niveau:3,exp:"Après la République, Rome devint un Empire dirigé par un empereur."},
+    {q:"Sur quel continent se trouve la France ?",choix:["l'Europe","l'Asie","l'Afrique","l'Amérique"],bonne:"l'Europe",niveau:1,exp:"La France est un pays d'Europe."},
+    {q:"Quel est le plus grand océan du monde ?",choix:["l'océan Pacifique","l'océan Atlantique","l'océan Indien","la mer Méditerranée"],bonne:"l'océan Pacifique",niveau:2,exp:"Le Pacifique est le plus vaste des océans."},
+    {q:"Combien y a-t-il d'océans sur la Terre ?",choix:["5","2","7","3"],bonne:"5",niveau:2,exp:"Pacifique, Atlantique, Indien, Arctique et Austral : 5 océans."},
+    {q:"Comment s'appelle la ligne imaginaire qui partage la Terre en Nord et Sud ?",choix:["l'équateur","le méridien de Paris","le tropique du Nord","l'horizon"],bonne:"l'équateur",niveau:3,exp:"L'équateur sépare l'hémisphère Nord de l'hémisphère Sud."},
+    {q:"Quels sont les quatre points cardinaux ?",choix:["Nord, Sud, Est, Ouest","Haut, Bas, Gauche, Droite","Chaud, Froid, Sec, Humide","Un, Deux, Trois, Quatre"],bonne:"Nord, Sud, Est, Ouest",niveau:1,exp:"Les points cardinaux : Nord, Sud, Est, Ouest."},
+    {q:"Le Soleil se lève à l'…",choix:["Est","Ouest","Nord","Sud"],bonne:"Est",niveau:2,exp:"Le Soleil se lève à l'Est et se couche à l'Ouest."},
+    {q:"Une très grande ville s'appelle une…",choix:["métropole","village","ferme","forêt"],bonne:"métropole",niveau:2,exp:"Une métropole est une très grande ville."},
+    {q:"Quelle est la capitale de la France ?",choix:["Paris","Lyon","Marseille","Bordeaux"],bonne:"Paris",niveau:1,exp:"La capitale de la France est Paris."},
+    {q:"Quel fleuve traverse Paris ?",choix:["la Seine","la Loire","le Rhône","la Garonne"],bonne:"la Seine",niveau:2,exp:"La Seine traverse Paris."},
+    {q:"Quel est le plus grand désert chaud du monde ?",choix:["le Sahara","la forêt amazonienne","les Alpes","la Sibérie"],bonne:"le Sahara",niveau:2,exp:"Le Sahara, en Afrique, est le plus grand désert chaud."},
+    {q:"Une carte du monde à plat s'appelle un…",choix:["planisphère","globe seulement","calendrier","dictionnaire"],bonne:"planisphère",niveau:3,exp:"Le planisphère représente toute la Terre à plat."},
+    {q:"Quel océan borde l'ouest de la France ?",choix:["l'océan Atlantique","l'océan Pacifique","l'océan Indien","la mer Rouge"],bonne:"l'océan Atlantique",niveau:2,exp:"L'océan Atlantique borde la côte ouest de la France."},
+    {q:"Le plus haut sommet des Alpes est…",choix:["le Mont Blanc","l'Everest","le Kilimandjaro","le Vésuve"],bonne:"le Mont Blanc",niveau:3,exp:"Le Mont Blanc est le plus haut sommet des Alpes."},
+    {q:"Quel continent est recouvert de glace, au pôle Sud ?",choix:["l'Antarctique","l'Afrique","l'Europe","l'Océanie"],bonne:"l'Antarctique",niveau:2,exp:"L'Antarctique, au pôle Sud, est couvert de glace."},
+    {q:"Quel est le plus grand continent du monde ?",choix:["l'Asie","l'Europe","l'Australie","l'Antarctique"],bonne:"l'Asie",niveau:3,exp:"L'Asie est le plus vaste et le plus peuplé des continents."},
+    {q:"Sur une boussole, l'aiguille aimantée indique le…",choix:["Nord","Sud","Est","Ouest"],bonne:"Nord",niveau:2,exp:"L'aiguille de la boussole pointe vers le Nord."},
+    {q:"Pour lire une carte, on utilise sa…",choix:["légende","couverture","préface","couleur seulement"],bonne:"légende",niveau:2,exp:"La légende explique les symboles et couleurs de la carte."},
+    {q:"Quelles sont les trois couleurs du drapeau français ?",choix:["bleu, blanc, rouge","vert, blanc, rouge","bleu, jaune, rouge","noir, blanc, rouge"],bonne:"bleu, blanc, rouge",niveau:1,exp:"Le drapeau français est bleu, blanc, rouge (tricolore)."},
+    {q:"Quelle est la devise de la République française ?",choix:["Liberté, Égalité, Fraternité","Un pour tous, tous pour un","Travail, Famille, Patrie","Paix et Amour"],bonne:"Liberté, Égalité, Fraternité",niveau:2,exp:"La devise de la République est : Liberté, Égalité, Fraternité."},
+    {q:"Comment s'appelle l'hymne national français ?",choix:["La Marseillaise","La Parisienne","Le Chant du départ","L'Internationale"],bonne:"La Marseillaise",niveau:2,exp:"L'hymne national de la France est La Marseillaise."},
+    {q:"Quel personnage féminin symbolise la République française ?",choix:["Marianne","Jeanne d'Arc","Cléopâtre","la Joconde"],bonne:"Marianne",niveau:3,exp:"Marianne, coiffée du bonnet, symbolise la République française."},
+    {q:"Quelle est la date de la fête nationale française ?",choix:["le 14 juillet","le 1er janvier","le 25 décembre","le 8 mai"],bonne:"le 14 juillet",niveau:2,exp:"La fête nationale est le 14 juillet (prise de la Bastille en 1789)."},
+    {q:"En démocratie, pour choisir leurs représentants, les citoyens…",choix:["votent","se battent","tirent au sort seulement","ne font rien"],bonne:"votent",niveau:2,exp:"Le vote (les élections) permet de choisir ses représentants."},
+    {q:"Quel animal est un symbole de la France ?",choix:["le coq","l'aigle","le lion","l'ours"],bonne:"le coq",niveau:2,exp:"Le coq gaulois est un symbole de la France."},
+    {q:"À l'école comme dans la société, une règle essentielle est…",choix:["le respect des autres","crier le plus fort","ne jamais partager","tricher"],bonne:"le respect des autres",niveau:1,exp:"Le respect des autres permet de bien vivre ensemble."},
+    {q:"Aller à l'école est, pour un enfant, un…",choix:["droit","interdit","secret","jeu vidéo"],bonne:"droit",niveau:2,exp:"L'éducation est un droit de l'enfant (et une obligation)."},
+    {q:"Le premier empereur romain s'appelait…",choix:["Auguste","Napoléon","Charlemagne","Louis XIV"],bonne:"Auguste",niveau:3,exp:"Auguste fut le premier empereur de Rome."},
+    {q:"Les hiéroglyphes ont été déchiffrés grâce à la pierre de…",choix:["Rosette","Lascaux","Rome","Sparte"],bonne:"Rosette",niveau:3,exp:"La pierre de Rosette a permis de déchiffrer les hiéroglyphes."},
+    {q:"L'équateur sépare l'hémisphère Nord de l'hémisphère…",choix:["Sud","Est","Ouest","central"],bonne:"Sud",niveau:2,exp:"Il y a l'hémisphère Nord et l'hémisphère Sud."},
+    {q:"Un célèbre aqueduc romain se trouve en France : c'est le…",choix:["pont du Gard","pont Neuf","viaduc de Millau","Tower Bridge"],bonne:"pont du Gard",niveau:3,exp:"Le pont du Gard est un aqueduc romain, dans le sud de la France."},
+    {q:"La Préhistoire, l'Antiquité, le Moyen Âge… sont des…",choix:["grandes périodes de l'Histoire","pays","planètes","matières scolaires"],bonne:"grandes périodes de l'Histoire",niveau:2,exp:"L'Histoire est découpée en grandes périodes."}
+  ],
+  anglais: [
+    {q:"Comment dit-on « Bonjour » en anglais ?",choix:["Hello","Goodbye","Thanks","Please"],bonne:"Hello",niveau:1,exp:"« Hello » = Bonjour / Salut."},
+    {q:"Comment dit-on « Merci » en anglais ?",choix:["Thank you","Hello","Sorry","Yes"],bonne:"Thank you",niveau:1,exp:"« Thank you » = Merci."},
+    {q:"Comment dit-on « Au revoir » en anglais ?",choix:["Goodbye","Hello","Please","Good"],bonne:"Goodbye",niveau:1,exp:"« Goodbye » = Au revoir."},
+    {q:"Que signifie « Yes » ?",choix:["Oui","Non","Peut-être","Merci"],bonne:"Oui",niveau:1,exp:"« Yes » = Oui."},
+    {q:"Que signifie « No » ?",choix:["Non","Oui","Bonjour","Encore"],bonne:"Non",niveau:1,exp:"« No » = Non."},
+    {q:"Comment dit-on « S'il te plaît » en anglais ?",choix:["Please","Sorry","Thanks","Hello"],bonne:"Please",niveau:2,exp:"« Please » = S'il te plaît."},
+    {q:"Que signifie « How are you? »",choix:["Comment vas-tu ?","Quel âge as-tu ?","Où es-tu ?","Comment t'appelles-tu ?"],bonne:"Comment vas-tu ?",niveau:2,exp:"« How are you? » = Comment vas-tu ?"},
+    {q:"Que signifie « What is your name? »",choix:["Comment t'appelles-tu ?","Quel âge as-tu ?","Où habites-tu ?","Quelle heure est-il ?"],bonne:"Comment t'appelles-tu ?",niveau:3,exp:"« What is your name? » = Comment t'appelles-tu ?"},
+    {q:"Que signifie « one » ?",choix:["un","deux","dix","trois"],bonne:"un",niveau:1,exp:"« one » = un (1)."},
+    {q:"Que signifie « three » ?",choix:["trois","deux","treize","trente"],bonne:"trois",niveau:1,exp:"« three » = trois (3)."},
+    {q:"Que signifie « ten » ?",choix:["dix","deux","trois","douze"],bonne:"dix",niveau:1,exp:"« ten » = dix (10)."},
+    {q:"Comment dit-on « cinq » en anglais ?",choix:["five","four","nine","fifteen"],bonne:"five",niveau:2,exp:"« five » = cinq (5)."},
+    {q:"Comment dit-on « huit » en anglais ?",choix:["eight","eighteen","eighty","nine"],bonne:"eight",niveau:2,exp:"« eight » = huit (8)."},
+    {q:"Que signifie « twelve » ?",choix:["douze","deux","vingt","dix"],bonne:"douze",niveau:2,exp:"« twelve » = douze (12)."},
+    {q:"Que signifie « twenty » ?",choix:["vingt","douze","deux","dix"],bonne:"vingt",niveau:3,exp:"« twenty » = vingt (20)."},
+    {q:"Que signifie « red » ?",choix:["rouge","bleu","vert","noir"],bonne:"rouge",niveau:1,exp:"« red » = rouge."},
+    {q:"Que signifie « blue » ?",choix:["bleu","rouge","jaune","blanc"],bonne:"bleu",niveau:1,exp:"« blue » = bleu."},
+    {q:"Que signifie « green » ?",choix:["vert","gris","rouge","rose"],bonne:"vert",niveau:1,exp:"« green » = vert."},
+    {q:"Que signifie « yellow » ?",choix:["jaune","orange","bleu","noir"],bonne:"jaune",niveau:2,exp:"« yellow » = jaune."},
+    {q:"Que signifie « black » ?",choix:["noir","blanc","brun","bleu"],bonne:"noir",niveau:1,exp:"« black » = noir."},
+    {q:"Que signifie « white » ?",choix:["blanc","noir","vert","rouge"],bonne:"blanc",niveau:1,exp:"« white » = blanc."},
+    {q:"Comment dit-on « rose » (la couleur) en anglais ?",choix:["pink","purple","red","brown"],bonne:"pink",niveau:2,exp:"« pink » = rose."},
+    {q:"Comment dit-on « marron » en anglais ?",choix:["brown","black","blue","orange"],bonne:"brown",niveau:3,exp:"« brown » = marron / brun."},
+    {q:"Que signifie « Monday » ?",choix:["lundi","dimanche","samedi","mardi"],bonne:"lundi",niveau:2,exp:"« Monday » = lundi."},
+    {q:"Que signifie « Sunday » ?",choix:["dimanche","samedi","lundi","vendredi"],bonne:"dimanche",niveau:2,exp:"« Sunday » = dimanche."},
+    {q:"Comment dit-on « vendredi » en anglais ?",choix:["Friday","Sunday","Thursday","Monday"],bonne:"Friday",niveau:3,exp:"« Friday » = vendredi."},
+    {q:"Que signifie « January » ?",choix:["janvier","juin","juillet","décembre"],bonne:"janvier",niveau:2,exp:"« January » = janvier."},
+    {q:"Que signifie « December » ?",choix:["décembre","septembre","novembre","octobre"],bonne:"décembre",niveau:3,exp:"« December » = décembre."},
+    {q:"Que signifie « mother » ?",choix:["mère","père","sœur","tante"],bonne:"mère",niveau:1,exp:"« mother » = mère (maman)."},
+    {q:"Que signifie « father » ?",choix:["père","frère","oncle","fils"],bonne:"père",niveau:1,exp:"« father » = père (papa)."},
+    {q:"Que signifie « brother » ?",choix:["frère","sœur","cousin","ami"],bonne:"frère",niveau:2,exp:"« brother » = frère."},
+    {q:"Que signifie « sister » ?",choix:["sœur","frère","mère","fille"],bonne:"sœur",niveau:2,exp:"« sister » = sœur."},
+    {q:"Comment dit-on « grand-mère » en anglais ?",choix:["grandmother","mother","aunt","sister"],bonne:"grandmother",niveau:3,exp:"« grandmother » = grand-mère."},
+    {q:"Que signifie « friend » ?",choix:["ami","ennemi","frère","voisin"],bonne:"ami",niveau:2,exp:"« friend » = ami(e)."},
+    {q:"Que signifie « dog » ?",choix:["chien","chat","oiseau","cheval"],bonne:"chien",niveau:1,exp:"« dog » = chien."},
+    {q:"Que signifie « cat » ?",choix:["chat","chien","souris","vache"],bonne:"chat",niveau:1,exp:"« cat » = chat."},
+    {q:"Que signifie « bird » ?",choix:["oiseau","poisson","chien","cheval"],bonne:"oiseau",niveau:2,exp:"« bird » = oiseau."},
+    {q:"Que signifie « horse » ?",choix:["cheval","vache","chien","âne"],bonne:"cheval",niveau:2,exp:"« horse » = cheval."},
+    {q:"Comment dit-on « poisson » en anglais ?",choix:["fish","bird","frog","fox"],bonne:"fish",niveau:2,exp:"« fish » = poisson."},
+    {q:"Que signifie « cow » ?",choix:["vache","cochon","poule","chèvre"],bonne:"vache",niveau:3,exp:"« cow » = vache."},
+    {q:"Que signifie « hand » ?",choix:["main","pied","tête","bras"],bonne:"main",niveau:2,exp:"« hand » = main."},
+    {q:"Que signifie « head » ?",choix:["tête","main","jambe","pied"],bonne:"tête",niveau:2,exp:"« head » = tête."},
+    {q:"Que signifie « eyes » ?",choix:["yeux","oreilles","mains","pieds"],bonne:"yeux",niveau:2,exp:"« eyes » = les yeux."},
+    {q:"Comment dit-on « bouche » en anglais ?",choix:["mouth","nose","ear","hand"],bonne:"mouth",niveau:3,exp:"« mouth » = bouche."},
+    {q:"Que signifie « apple » ?",choix:["pomme","poire","banane","orange"],bonne:"pomme",niveau:1,exp:"« apple » = pomme."},
+    {q:"Que signifie « bread » ?",choix:["pain","lait","eau","fromage"],bonne:"pain",niveau:2,exp:"« bread » = pain."},
+    {q:"Que signifie « water » ?",choix:["eau","lait","jus","vin"],bonne:"eau",niveau:1,exp:"« water » = eau."},
+    {q:"Que signifie « milk » ?",choix:["lait","eau","pain","œuf"],bonne:"lait",niveau:2,exp:"« milk » = lait."},
+    {q:"Comment dit-on « fromage » en anglais ?",choix:["cheese","butter","bread","meat"],bonne:"cheese",niveau:3,exp:"« cheese » = fromage."},
+    {q:"Complète : « I ___ a student. » (verbe être)",choix:["am","is","are","be"],bonne:"am",niveau:2,exp:"Avec « I », le verbe être est « am » : I am."},
+    {q:"Complète : « She ___ happy. » (verbe être)",choix:["is","am","are","be"],bonne:"is",niveau:2,exp:"Avec he/she/it, on utilise « is » : she is."},
+    {q:"Complète : « They ___ friends. » (verbe être)",choix:["are","is","am","be"],bonne:"are",niveau:2,exp:"Avec we/you/they, on utilise « are » : they are."},
+    {q:"Complète : « I ___ a dog. » (verbe avoir)",choix:["have","has","haves","having"],bonne:"have",niveau:3,exp:"Avec I/you/we/they : « have ». I have a dog."},
+    {q:"Complète : « He ___ a car. » (verbe avoir)",choix:["has","have","haves","is"],bonne:"has",niveau:3,exp:"Avec he/she/it : « has ». He has a car."},
+    {q:"Quel est le pluriel de « cat » ?",choix:["cats","cat","cates","catz"],bonne:"cats",niveau:2,exp:"On ajoute un « s » : cat → cats."},
+    {q:"Complète : « ___ apple » (a / an)",choix:["an","a","the one","some"],bonne:"an",niveau:3,exp:"Devant un son voyelle (a-e-i-o-u), on met « an » : an apple."},
+    {q:"Complète : « ___ book » (a / an)",choix:["a","an","the two","many"],bonne:"a",niveau:3,exp:"Devant un son consonne, on met « a » : a book."},
+    {q:"Que signifie « book » ?",choix:["livre","cahier","stylo","école"],bonne:"livre",niveau:2,exp:"« book » = livre."},
+    {q:"Que signifie « school » ?",choix:["école","maison","magasin","jardin"],bonne:"école",niveau:1,exp:"« school » = école."},
+    {q:"Que signifie « house » ?",choix:["maison","école","voiture","rue"],bonne:"maison",niveau:1,exp:"« house » = maison."},
+    {q:"Que signifie « big » ?",choix:["grand","petit","vieux","rapide"],bonne:"grand",niveau:2,exp:"« big » = grand. Son contraire est « small » (petit)."},
+    {q:"Que signifie « small » ?",choix:["petit","grand","long","haut"],bonne:"petit",niveau:2,exp:"« small » = petit."},
+    {q:"Comment dit-on « garçon » en anglais ?",choix:["boy","girl","man","kid"],bonne:"boy",niveau:2,exp:"« boy » = garçon."},
+    {q:"Comment dit-on « fille » en anglais ?",choix:["girl","boy","woman","lady"],bonne:"girl",niveau:2,exp:"« girl » = fille."},
+    {q:"Que signifie le mot interrogatif « What » ?",choix:["Quoi / Que","Où","Quand","Qui"],bonne:"Quoi / Que",niveau:3,exp:"« What » = Quoi / Que (What is it? = Qu'est-ce que c'est ?)."}
+  ]
+};
 
-function updateBars() {
-eugeneBar.style.width = ${eugeneHealth}%;
-enemyBar.style.width = ${enemyHealth}%;
+/* ---------- Îles / boss ---------- */
+const ILES = [
+  {id:'maths',    nom:"Île des Nombres", emo:"🏝️", coul:"linear-gradient(135deg,#2b6cff,#54c8ff)", temps:26, boss:{nom:"Golem des Calculs", emo:"🗿", pv:120, degats:20}},
+  {id:'francais', nom:"Forêt des Mots",  emo:"🌳", coul:"linear-gradient(135deg,#ff6a88,#ff99ac)", temps:24, boss:{nom:"Hibou Grammairien", emo:"🦉", pv:120, degats:20}},
+  {id:'sciences', nom:"Labo Mystère",    emo:"⚗️", coul:"linear-gradient(135deg,#20c46b,#7be495)", temps:24, boss:{nom:"Professeur Atome", emo:"🧪", pv:130, degats:22}},
+  {id:'histgeo',  nom:"Temple du Temps", emo:"🏛️", coul:"linear-gradient(135deg,#ff8a00,#ffc93c)", temps:24, boss:{nom:"Pharaon Éternel", emo:"👑", pv:130, degats:22}},
+  {id:'anglais',  nom:"Cité d'Albion",   emo:"🏰", coul:"linear-gradient(135deg,#7b2ff7,#c072ff)", temps:24, boss:{nom:"Sir Dragon", emo:"🐉", pv:145, degats:24}}
+];
+const NOMS_MAT={maths:"Maths",francais:"Français",sciences:"Sciences & Techno",histgeo:"Histoire-Géo",anglais:"Anglais"};
+const PALIERS=5, PAR_PALIER=5;
+
+/* ---------- Boutique ---------- */
+const SKINS=[{e:"🦸",p:0},{e:"🦸‍♀️",p:0},{e:"🥷",p:80},{e:"🧙",p:130},{e:"🦹",p:160},{e:"👑",p:260},{e:"🧑‍🚀",p:320},{e:"🦄",p:450}];
+const PETS=[
+  {e:"🐶",nom:"Toutou",p:120,perk:"+10% pièces",bonus:0.10},
+  {e:"🐱",nom:"Minou",p:120,perk:"+10% pièces",bonus:0.10},
+  {e:"🦊",nom:"Renard",p:200,perk:"+15% pièces",bonus:0.15},
+  {e:"🐉",nom:"Draco",p:380,perk:"+25% pièces",bonus:0.25},
+  {e:"🦖",nom:"Rex",p:340,perk:"+20% pièces",bonus:0.20}
+];
+const PACKS=[{cle:"c50",nom:"Pack 50/50",emo:"➗",p:70,n:3},{cle:"temps",nom:"Pack +Temps",emo:"⏱️",p:70,n:3},{cle:"indice",nom:"Pack Indice",emo:"💡",p:60,n:3}];
+const RANGS=[["Bronze","#cd7f32",0],["Argent","#9aa4b2",600],["Or","#ffc93c",900],["Platine","#38d9c9",1200],["Diamant","#b06bff",1600]];
+
+/* ---------- Sauvegarde ---------- */
+const SAVE_KEY="ile_savoirs_v1";
+function defaut(){
+  return {coins:0,xp:0,rating:400,skin:"🦸",skins:["🦸","🦸‍♀️"],pets:[],pet:null,
+    power:{c50:1,temps:1,indice:1},
+    iles:Object.fromEntries(ILES.map(i=>[i.id,{palier:0,etoiles:{},boss:false}])),
+    rush:0,dailyDate:"",streak:0,badges:[]};
+}
+let S=chargerSave();
+function chargerSave(){try{const d=JSON.parse(localStorage.getItem(SAVE_KEY));if(d&&d.iles){const base=defaut();return Object.assign(base,d,{power:Object.assign(base.power,d.power||{}),iles:Object.assign(base.iles,d.iles||{})});}}catch(e){}return defaut();}
+function save(){try{localStorage.setItem(SAVE_KEY,JSON.stringify(S));}catch(e){}}
+
+/* ---------- Utilitaires ---------- */
+const $=s=>document.querySelector(s);
+const scene=()=>document.getElementById('scene');
+function melange(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+function niveauHero(){return Math.floor(S.xp/150)+1;}
+function rang(){let r=RANGS[0];for(const x of RANGS)if(S.rating>=x[2])r=x;return r;}
+function petBonus(){const p=PETS.find(x=>x.e===S.pet);return p?p.bonus:0;}
+function gagnerPieces(n){n=Math.round(n*(1+petBonus()));S.coins+=n;return n;}
+function toutes(){return Object.keys(QUESTIONS).flatMap(k=>QUESTIONS[k].map(x=>({...x,mat:k})));}
+function piocher(mat,n,nivMax){
+  let src = mat==='mix'?toutes():QUESTIONS[mat].map(x=>({...x,mat}));
+  if(nivMax) src=src.filter(x=>x.niveau<=nivMax);
+  if(src.length<n) src=(mat==='mix'?toutes():QUESTIONS[mat].map(x=>({...x,mat})));
+  return melange(src).slice(0,Math.min(n,src.length));
+}
+function majEntete(){
+  const r=rang();
+  $('#hdr-avatar').textContent=S.skin;
+  $('#hdr-infos').innerHTML=
+    `<span class="puce">🪙 ${S.coins}</span>`+
+    `<span class="puce">⭐ Niv.${niveauHero()}</span>`+
+    `<span class="puce" style="background:${r[1]}">${r[0]}</span>`;
 }
 
-function displayQuestion() {
-question.textContent = "Quelle est la réponse ?"; // Remplacez par votre question
+/* ---------- Sons ---------- */
+let SON=true,actx=null;
+function beep(f,d,t){if(!SON)return;try{actx=actx||new(window.AudioContext||window.webkitAudioContext)();const o=actx.createOscillator(),g=actx.createGain();o.type=t||'sine';o.frequency.value=f;o.connect(g);g.connect(actx.destination);g.gain.setValueAtTime(.13,actx.currentTime);g.gain.exponentialRampToValueAtTime(.001,actx.currentTime+(d||.15));o.start();o.stop(actx.currentTime+(d||.15));}catch(e){}}
+const sfx={bon:()=>{beep(660,.12,'triangle');setTimeout(()=>beep(880,.13,'triangle'),100);},faux:()=>beep(160,.24,'sawtooth'),coup:()=>beep(120,.17,'square'),win:()=>{[523,659,784,1046].forEach((f,i)=>setTimeout(()=>beep(f,.17,'triangle'),i*130));},lose:()=>{[330,262,196].forEach((f,i)=>setTimeout(()=>beep(f,.24,'sawtooth'),i*170));},piece:()=>beep(1046,.1,'triangle')};
+
+/* ---------- Badges ---------- */
+function badge(id,txt){if(S.badges.includes(id))return;S.badges.push(id);save();toast('🏅 Badge : '+txt);}
+function toast(txt){const t=document.createElement('div');t.textContent=txt;t.style.cssText="position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#141b3d;color:#fff;padding:12px 18px;border-radius:14px;font-weight:800;z-index:99;box-shadow:0 10px 30px rgba(0,0,0,.35);animation:pop .3s";document.body.appendChild(t);setTimeout(()=>t.remove(),2600);}
+
+/* =====================================================================
+   MENU PRINCIPAL
+   ===================================================================== */
+let chronoId=null;
+function stopChrono(){if(chronoId){cancelAnimationFrame(chronoId);chronoId=null;}}
+function menu(){
+  stopChrono();majEntete();
+  const rushRec=S.rush||0;
+  scene().className='carte ecran';
+  scene().innerHTML=`
+    <h1>Salut Eugène ! 👋</h1>
+    <p class="sous">Choisis ton mode. Consolide tout le programme de 6ᵉ (et avant), gagne des pièces, débloque des îles, des mascottes et deviens <b>Champion</b> !</p>
+    <div class="menu">
+      <button class="tuile t-aventure" id="m-aventure"><span class="emo">🗺️</span> Aventure <small>Carte, paliers &amp; boss</small></button>
+      <button class="tuile t-rush" id="m-rush"><span class="emo">⚡</span> Défi Éclair <small>Record : ${rushRec}</small></button>
+      <button class="tuile t-jour" id="m-jour"><span class="emo">📅</span> Défi du jour <small>${S.dailyDate===aujourdhui()?'✅ fait — série '+S.streak:'+60 🪙 · série '+S.streak}</small></button>
+      <button class="tuile t-boutique" id="m-boutique"><span class="emo">🛍️</span> Boutique <small>Skins, mascottes, power-ups</small></button>
+      <button class="tuile t-zen t-large" id="m-zen"><span class="emo">🧘</span> Entraînement zen <small>Réviser tranquille, sans chrono, avec les explications</small></button>
+    </div>`;
+  $('#m-aventure').onclick=carte;
+  $('#m-rush').onclick=rushIntro;
+  $('#m-jour').onclick=daily;
+  $('#m-boutique').onclick=boutique;
+  $('#m-zen').onclick=zenChoix;
 }
 
-function displayButtons() {
-buttons.innerHTML = `
-<button class="button" onclick="eugeneAnswer()">Réponse 1</button>
-<button class="button" onclick="enemyAnswer()">Réponse 2</button>
-`;
+/* =====================================================================
+   CARTE-MONDE
+   ===================================================================== */
+function ileDebloquee(idx){return idx===0 || S.iles[ILES[idx-1].id].boss;}
+function carte(){
+  stopChrono();majEntete();
+  scene().className='carte ecran';
+  let html=`<div class="row" style="justify-content:space-between;align-items:center"><h2 style="margin:0">🗺️ Carte du Savoir</h2><button class="btn ghost" id="ret">← Menu</button></div>
+    <p class="sous" style="margin-top:10px">Termine une île (5 paliers + son boss) pour débloquer la suivante.</p><div class="iles">`;
+  ILES.forEach((ile,idx)=>{
+    const st=S.iles[ile.id], ouvert=ileDebloquee(idx);
+    const nbEtoiles=Object.values(st.etoiles).reduce((a,b)=>a+b,0);
+    html+=`<div class="ile ${ouvert?'':'verrou'}" style="background:${ile.coul}" data-idx="${idx}">
+      <div class="ico">${ile.emo}</div>
+      <div class="txt"><div class="nom">${ile.nom}</div>
+        <div class="prog">${NOMS_MAT[ile.id]} · ${ouvert?(st.boss?'✅ terminée':'palier '+(st.palier+ (st.palier>=PALIERS?0:1))+'/'+ (PALIERS+1))+' · ⭐'+nbEtoiles:'🔒 verrouillée'}</div></div>
+      ${ouvert?'':'<div class="cadenas">🔒</div>'}</div>`;
+  });
+  html+=`</div>`;
+  scene().innerHTML=html;
+  $('#ret').onclick=menu;
+  document.querySelectorAll('.ile').forEach(el=>{
+    const idx=+el.dataset.idx;
+    if(ileDebloquee(idx)) el.onclick=()=>ileVue(idx);
+  });
+}
+function ileVue(idx){
+  const ile=ILES[idx], st=S.iles[ile.id];
+  scene().className='carte ecran';
+  let noeuds='';
+  for(let p=0;p<PALIERS;p++){
+    const fait=st.palier>p, actif=st.palier===p, cls=fait?'fait':(actif?'actif':(p<st.palier?'fait':'verrou'));
+    const etoile=st.etoiles[p]?'⭐'.repeat(st.etoiles[p]):'';
+    noeuds+=`<div class="noeud ${st.palier>=p?(fait?'fait':'actif'):'verrou'}" data-p="${p}">${fait?'✓':p+1}${etoile?`<span class="mini">${etoile}</span>`:''}</div>`;
+  }
+  const bossOuvert=st.palier>=PALIERS;
+  noeuds+=`<div class="noeud boss ${bossOuvert?'':'verrou'}" data-p="boss" title="Boss">${st.boss?'👑':ile.boss.emo}</div>`;
+  scene().innerHTML=`
+    <div class="row" style="justify-content:space-between;align-items:center"><h2 style="margin:0">${ile.emo} ${ile.nom}</h2><button class="btn ghost" id="ret">← Carte</button></div>
+    <p class="sous" style="margin-top:10px">${NOMS_MAT[ile.id]} — franchis les 5 paliers, puis bats <b>${ile.boss.nom}</b> ${ile.boss.emo}</p>
+    <div class="chemin">${noeuds}</div>`;
+  $('#ret').onclick=carte;
+  document.querySelectorAll('.noeud').forEach(n=>{
+    const p=n.dataset.p;
+    if(p==='boss'){ if(bossOuvert) n.onclick=()=>bossFight(idx); }
+    else if(+p<=st.palier) n.onclick=()=>jouerPalier(idx,+p);
+  });
 }
 
-function startTimer() {
-let interval = setInterval(() => {
-timeLeft--;
-timer.textContent = Temps restant: ${timeLeft}s;
-if (timeLeft <= 0) {
-clearInterval(interval);
-if (eugeneAnswered && enemyAnswered) {
-if (eugeneAnswered && !enemyAnswered) {
-alert("Eugène a gagné !");
-} else {
-alert("Eugène a perdu...");
+/* =====================================================================
+   PALIER (quiz de 5 questions, avec chrono + power-ups)
+   ===================================================================== */
+let jeu=null;
+function jouerPalier(idx,p){
+  const ile=ILES[idx];
+  const nivMax=p<=1?1:(p<=3?2:3);
+  jeu={type:'palier',idx,p,ile,liste:piocher(ile.id,PAR_PALIER,nivMax),i:0,bonnes:0,temps:ile.temps,zen:false};
+  questionJeu();
 }
-} else if (!eugeneAnswered && enemyAnswered) {
-alert("Eugène a perdu...");
+function zenJouer(mat){
+  jeu={type:'zen',mat,liste:piocher(mat,10,3),i:0,bonnes:0,zen:true};
+  questionJeu();
 }
+function questionJeu(){
+  stopChrono();
+  if(jeu.i>=jeu.liste.length) return finJeu();
+  const q=jeu.liste[jeu.i], choix=melange(q.choix);
+  jeu.q=q; jeu.choixAffiches=choix; jeu.repondu=false; jeu.t0=performance.now();
+  const nomMat=q.mat?NOMS_MAT[q.mat]:'';
+  scene().className='carte ecran';
+  scene().innerHTML=`
+    <div class="barre"><i style="width:${(jeu.i/jeu.liste.length)*100}%"></i></div>
+    <div class="qtop"><span>${jeu.type==='zen'?'🧘 Zen':(jeu.ile.emo+' '+jeu.ile.nom)} · Q${jeu.i+1}/${jeu.liste.length}</span><span>${nomMat}${jeu.type!=='zen'?' · ✔ '+jeu.bonnes:''}</span></div>
+    ${jeu.zen?'':`<div class="chrono"><i id="chrono-bar"></i></div>
+    <div class="powers">
+      <button class="power" id="p-c50" ${S.power.c50>0?'':'disabled'}>➗ 50/50 (${S.power.c50})</button>
+      <button class="power" id="p-temps" ${S.power.temps>0?'':'disabled'}>⏱️ +8s (${S.power.temps})</button>
+      <button class="power" id="p-indice" ${S.power.indice>0?'':'disabled'}>💡 Indice (${S.power.indice})</button>
+    </div>`}
+    <div class="question">${esc(q.q)}</div>
+    <div class="choix" id="choix"></div>
+    <div class="explication" id="exp"></div>
+    <div id="suite" style="margin-top:14px"></div>`;
+  const cont=$('#choix');
+  choix.forEach(c=>{const b=document.createElement('button');b.textContent=c;b.onclick=()=>repondreJeu(b,c);cont.appendChild(b);});
+  if(!jeu.zen){
+    $('#p-c50').onclick=()=>usePower('c50');
+    $('#p-temps').onclick=()=>usePower('temps');
+    $('#p-indice').onclick=()=>usePower('indice');
+    lancerChrono(jeu.temps);
+  }
 }
-if (timeLeft <= 0) {
-clearInterval(interval);
-if (eugeneAnswered && enemyAnswered) {
-if (eugeneAnswered && !enemyAnswered) {
-alert("Eugène a gagné !");
-} else {
-alert("Eugène a perdu...");
+function lancerChrono(sec){
+  stopChrono();const bar=$('#chrono-bar');if(!bar)return;
+  jeu.chronoBonus=0;const t0=performance.now();
+  const boucle=now=>{const dt=(now-t0)/1000 - (jeu.chronoBonus||0);const reste=Math.max(0,1-dt/sec);bar.style.width=(reste*100)+'%';if(dt>=sec){chronoId=null;tempsEcouleJeu();return;}chronoId=requestAnimationFrame(boucle);};
+  chronoId=requestAnimationFrame(boucle);
 }
-} else if (!eugeneAnswered && enemyAnswered) {
-alert("Eugène a perdu...");
+function usePower(cle){
+  if(jeu.repondu||S.power[cle]<=0)return;
+  S.power[cle]--;save();
+  const boutons=[...document.querySelectorAll('#choix button')];
+  if(cle==='c50'||cle==='indice'){
+    const mauvais=boutons.filter(b=>b.textContent!==jeu.q.bonne && !b.classList.contains('efface'));
+    const aEffacer=melange(mauvais).slice(0,cle==='c50'?2:1);
+    aEffacer.forEach(b=>{b.classList.add('efface');b.disabled=true;});
+  }else if(cle==='temps'){ jeu.chronoBonus=(jeu.chronoBonus||0)+8; }
+  const btn=$('#p-'+cle); if(btn){btn.textContent=btn.textContent.replace(/\(\d+\)/,'('+S.power[cle]+')'); if(S.power[cle]<=0)btn.disabled=true;}
 }
+function tempsEcouleJeu(){ if(jeu.repondu)return; jeu.repondu=true; revele(null); sfx.faux(); avancerJeu(false,'⏰ Temps écoulé !'); }
+function repondreJeu(btn,c){
+  if(jeu.repondu)return; jeu.repondu=true; stopChrono();
+  const bon=(c===jeu.q.bonne);
+  revele(bon?null:btn);
+  if(bon){jeu.bonnes++;sfx.bon();} else sfx.faux();
+  avancerJeu(bon);
 }
-}, 1000);
+function revele(btnFaux){
+  document.querySelectorAll('#choix button').forEach(b=>{b.disabled=true;if(b.textContent===jeu.q.bonne)b.classList.add('bon');});
+  if(btnFaux)btnFaux.classList.add('faux');
+  const exp=$('#exp');exp.style.display='block';
+  const bon=!btnFaux && document.querySelector('#choix button.faux')===null && jeu.repondu;
+}
+function avancerJeu(bon,forceMsg){
+  const exp=$('#exp');
+  if(bon){exp.className='explication bon';exp.innerHTML=`✅ <b>Bravo !</b> ${esc(jeu.q.exp)}`;}
+  else{exp.className='explication faux';exp.innerHTML=`${forceMsg?esc(forceMsg)+' ':''}❌ Bonne réponse : <b>${esc(jeu.q.bonne)}</b>. ${esc(jeu.q.exp)}`;}
+  const suite=$('#suite');const b=document.createElement('button');b.className='btn large';
+  b.textContent=jeu.i===jeu.liste.length-1?'Terminer 🏁':'Suivant →';
+  b.onclick=()=>{jeu.i++;questionJeu();};
+  suite.appendChild(b);
+}
+function finJeu(){
+  stopChrono();
+  const n=jeu.liste.length, bonnes=jeu.bonnes, ratio=bonnes/n;
+  if(jeu.type==='zen') return finZen(bonnes,n);
+  // palier
+  const etoiles = bonnes===n?3 : bonnes>=Math.ceil(n*0.8)?2 : bonnes>=Math.ceil(n*0.6)?1:0;
+  const reussi = bonnes>=3;
+  const st=S.iles[jeu.ile.id];
+  let pieces=0,xp=0;
+  if(reussi){
+    if(jeu.p===st.palier){ st.palier++; }
+    if(!st.etoiles[jeu.p] || etoiles>st.etoiles[jeu.p]) st.etoiles[jeu.p]=etoiles;
+    pieces=gagnerPieces(bonnes*8+etoiles*10); xp=bonnes*12+etoiles*15; S.xp+=xp;
+    S.rating+=10+etoiles*8;
+    if(st.palier>=1) badge('p1','Premier palier franchi !');
+  } else { S.rating=Math.max(100,S.rating-8); }
+  save();
+  (reussi?sfx.win:sfx.lose)();
+  scene().className='carte ecran centre';
+  scene().innerHTML=`
+    <div class="gros-emo">${etoiles===3?'🏆':reussi?'🎉':'💪'}</div>
+    <h2>${reussi?'Palier réussi !':'Presque ! Réessaie'}</h2>
+    <div class="etoiles">${'⭐'.repeat(etoiles)}${'▫️'.repeat(3-etoiles)}</div>
+    <div class="stat">${bonnes} / ${n}</div>
+    <p class="sous">${reussi?`+${pieces} 🪙 · +${xp} XP`:'Il faut au moins 3 bonnes réponses pour valider.'}</p>
+    <div class="row" style="justify-content:center">
+      <button class="btn" id="rej">🔁 Rejouer</button>
+      <button class="btn ghost" id="carte2">🗺️ Île</button>
+    </div>`;
+  $('#rej').onclick=()=>jouerPalier(jeu.idx,jeu.p);
+  $('#carte2').onclick=()=>ileVue(jeu.idx);
+}
+function finZen(bonnes,n){
+  S.xp+=bonnes*6; const pieces=gagnerPieces(bonnes*4); save();
+  (bonnes>=n*0.6?sfx.win:sfx.faux)();
+  scene().className='carte ecran centre';
+  scene().innerHTML=`
+    <div class="gros-emo">🧘</div><h2>Séance terminée !</h2>
+    <div class="stat">${bonnes} / ${n}</div>
+    <p class="sous">+${pieces} 🪙 · bravo d'avoir révisé 💪</p>
+    <div class="row" style="justify-content:center">
+      <button class="btn" id="rej">🔁 Encore</button>
+      <button class="btn ghost" id="men">🏠 Menu</button>
+    </div>`;
+  $('#rej').onclick=()=>zenJouer(jeu.mat);
+  $('#men').onclick=menu;
 }
 
-function eugeneAnswer() {
-eugeneAnswered = true;
-enemyAnswered = true;
-updateBars();
-displayQuestion();
-displayButtons();
-startTimer();
+/* =====================================================================
+   BOSS (combat)
+   ===================================================================== */
+let combat=null;
+function bossFight(idx){
+  const ile=ILES[idx];
+  combat={idx,ile,boss:ile.boss,heroMax:100,hero:100,ennemi:ile.boss.pv,ennemiMax:ile.boss.pv,bonnes:0,total:0,repondu:false};
+  dessinerBoss(`${ile.boss.nom} surgit ! Réponds vite et juste !`);
+  setTimeout(roundBoss,600);
+}
+function dessinerBoss(msg){
+  const b=combat.boss;
+  scene().className='carte ecran';
+  scene().innerHTML=`
+    <div class="row" style="justify-content:space-between;align-items:center"><h2 style="margin:0">👑 Boss — ${combat.ile.nom}</h2><button class="btn ghost" id="fuir">← Fuir</button></div>
+    <div class="arene" style="margin-top:10px">
+      <div class="combattant"><div class="avatar" id="av-hero">${S.skin}</div><div class="nom">Eugène ${S.pet||''}</div><div class="pv hero"><i id="pv-hero" style="width:100%"></i><small id="pt-hero"></small></div></div>
+      <div style="font-size:24px;padding-bottom:24px">⚔️</div>
+      <div class="combattant"><div class="avatar" id="av-enemi">${b.emo}</div><div class="nom">${esc(b.nom)}</div><div class="pv enemi"><i id="pv-enemi" style="width:100%"></i><small id="pt-enemi"></small></div></div>
+    </div>
+    <div class="msg" id="msg">${esc(msg||'')}</div>
+    <div class="chrono"><i id="chrono-bar"></i></div>
+    <div class="question" id="q-boss">…</div>
+    <div class="choix" id="choix-boss"></div>`;
+  $('#fuir').onclick=()=>ileVue(combat.idx);
+  majPv();
+}
+function majPv(){const h=Math.max(0,combat.hero),e=Math.max(0,combat.ennemi);$('#pv-hero').style.width=(h/combat.heroMax*100)+'%';$('#pv-enemi').style.width=(e/combat.ennemiMax*100)+'%';$('#pt-hero').textContent=h+' PV';$('#pt-enemi').textContent=e+' PV';}
+function roundBoss(){
+  if(!combat)return;
+  const q=piocher(combat.ile.id,1,3)[0];combat.q=q;combat.repondu=false;combat.t0=performance.now();
+  const choix=melange(q.choix);const m=$('#msg');if(m)m.textContent='';
+  $('#q-boss').innerHTML=esc(q.q);
+  const cont=$('#choix-boss');cont.innerHTML='';
+  choix.forEach(c=>{const b=document.createElement('button');b.textContent=c;b.onclick=()=>repBoss(b,c);cont.appendChild(b);});
+  lancerChronoBoss(14);
+}
+function lancerChronoBoss(sec){stopChrono();const bar=$('#chrono-bar');if(!bar)return;const t0=performance.now();const boucle=now=>{const dt=(now-t0)/1000;bar.style.width=Math.max(0,1-dt/sec)*100+'%';if(dt>=sec){chronoId=null;tempsBoss();return;}chronoId=requestAnimationFrame(boucle);};chronoId=requestAnimationFrame(boucle);}
+function verrouBoss(btnFaux){document.querySelectorAll('#choix-boss button').forEach(b=>{b.disabled=true;if(b.textContent===combat.q.bonne)b.classList.add('bon');});if(btnFaux)btnFaux.classList.add('faux');}
+function flott(cible,txt,coul){const host=document.querySelector('.arene');if(!host||!cible)return;const el=document.createElement('div');el.className='flottant';el.textContent=txt;el.style.color=coul;const bb=cible.getBoundingClientRect(),hb=host.getBoundingClientRect();el.style.left=(bb.left-hb.left+bb.width/2-12)+'px';el.style.top=(bb.top-hb.top-8)+'px';host.appendChild(el);setTimeout(()=>el.remove(),1000);}
+function heroFrappe(d,msg){sfx.coup();combat.ennemi=Math.max(0,combat.ennemi-d);const a=$('#av-enemi');if(a){a.classList.add('hit');setTimeout(()=>a.classList.remove('hit'),400);flott(a,'-'+d,'#ff3b30');}majPv();const m=$('#msg');if(m)m.innerHTML=esc(msg);}
+function ennemiFrappe(msg){sfx.coup();combat.hero=Math.max(0,combat.hero-combat.boss.degats);const a=$('#av-hero');if(a){a.classList.add('hit');setTimeout(()=>a.classList.remove('hit'),400);flott(a,'-'+combat.boss.degats,'#ff3b30');}majPv();if(msg){const m=$('#msg');if(m)m.innerHTML=esc(msg);}}
+function repBoss(btn,c){
+  if(!combat||combat.repondu)return;combat.repondu=true;stopChrono();combat.total++;
+  const dt=(performance.now()-combat.t0)/1000, bon=(c===combat.q.bonne);
+  verrouBoss(bon?null:btn);
+  if(bon){combat.bonnes++;const rapide=dt<7;if(rapide){const d=20+Math.round(Math.min(4,7-dt))*2;heroFrappe(d,`💥 Coup critique ! -${d} PV`);}else{heroFrappe(14,'✅ Juste, mais lent : échange !');setTimeout(()=>ennemiFrappe(''),350);}}
+  else{sfx.faux();ennemiFrappe(`❌ Raté ! C'était « ${combat.q.bonne} ». ${combat.boss.nom} frappe !`);}
+  finRoundBoss();
+}
+function tempsBoss(){if(!combat||combat.repondu)return;combat.repondu=true;combat.total++;verrouBoss(null);ennemiFrappe('⏰ Trop lent !');finRoundBoss();}
+function finRoundBoss(){
+  setTimeout(()=>{
+    if(!combat)return;
+    if(combat.hero<=0)return bossPerdu();
+    if(combat.ennemi<=0)return bossGagne();
+    roundBoss();
+  },1300);
+}
+function bossGagne(){
+  stopChrono();sfx.win();
+  const st=S.iles[combat.idx!=null?ILES[combat.idx].id:combat.ile.id];
+  const premiere=!st.boss; st.boss=true;
+  const pieces=gagnerPieces(premiere?150:60); S.xp+=120; S.rating+=45; save();
+  badge('boss1','Premier boss vaincu !');
+  if(ILES.every(i=>S.iles[i.id].boss)) badge('champ','CHAMPION de toutes les îles !');
+  scene().className='carte ecran centre';
+  scene().innerHTML=`
+    <div class="gros-emo">🏆</div><h2>${combat.boss.nom} est vaincu !</h2>
+    <p class="sous">${premiere?`Nouvelle île débloquée ! `:''}+${pieces} 🪙 · +120 XP</p>
+    <div class="etoiles">⭐⭐⭐</div>
+    <p class="sous">${combat.bonnes}/${combat.total} bonnes réponses</p>
+    <div class="row" style="justify-content:center"><button class="btn" id="carte2">🗺️ Carte</button><button class="btn ghost" id="men">🏠 Menu</button></div>`;
+  $('#carte2').onclick=carte;$('#men').onclick=menu;
+}
+function bossPerdu(){
+  stopChrono();sfx.lose();S.rating=Math.max(100,S.rating-12);save();
+  scene().className='carte ecran centre';
+  scene().innerHTML=`
+    <div class="gros-emo">💥</div><h2>${combat.boss.nom} t'a battu…</h2>
+    <p class="sous">Réentraîne-toi et reviens plus fort ! 💪</p>
+    <p class="sous">${combat.bonnes}/${combat.total} bonnes réponses</p>
+    <div class="row" style="justify-content:center"><button class="btn" id="rej">🔁 Réessayer</button><button class="btn ghost" id="carte2">🗺️ Île</button></div>`;
+  $('#rej').onclick=()=>bossFight(combat.idx);$('#carte2').onclick=()=>ileVue(combat.idx);
 }
 
-function enemyAnswer() {
-eugeneAnswered = true;
-enemyAnswered = true;
-updateBars();
-displayQuestion();
-displayButtons();
-startTimer();
+/* =====================================================================
+   DÉFI ÉCLAIR (puzzle rush)
+   ===================================================================== */
+let rush=null;
+function rushIntro(){
+  scene().className='carte ecran centre';
+  scene().innerHTML=`
+    <div class="gros-emo">⚡</div><h2>Défi Éclair</h2>
+    <p class="sous">Enchaîne un maximum de bonnes réponses ! <b>3 erreurs = fin.</b> Toutes les matières, de plus en plus dur.<br>🏆 Ton record : <b>${S.rush||0}</b></p>
+    <div class="row" style="justify-content:center"><button class="btn large" id="go" style="max-width:260px">🚀 Commencer</button></div>
+    <div style="margin-top:10px"><button class="btn ghost" id="men">← Menu</button></div>`;
+  $('#go').onclick=rushStart;$('#men').onclick=menu;
+}
+function rushStart(){rush={score:0,vies:3,repondu:false};rushRound();}
+function rushRound(){
+  stopChrono();
+  const nivMax=rush.score<5?1:rush.score<12?2:3;
+  const q=piocher('mix',1,nivMax)[0];rush.q=q;rush.repondu=false;
+  const choix=melange(q.choix);
+  scene().className='carte ecran';
+  scene().innerHTML=`
+    <div class="qtop"><span>⚡ Défi Éclair</span><span>❤️ ${'❤️'.repeat(rush.vies)}${'🖤'.repeat(3-rush.vies)}</span></div>
+    <div class="stat centre">${rush.score}</div>
+    <p class="sous centre" style="margin:4px 0 14px">${NOMS_MAT[q.mat]}</p>
+    <div class="chrono"><i id="chrono-bar"></i></div>
+    <div class="question">${esc(q.q)}</div>
+    <div class="choix" id="choix"></div>`;
+  const cont=$('#choix');choix.forEach(c=>{const b=document.createElement('button');b.textContent=c;b.onclick=()=>rushRep(b,c);cont.appendChild(b);});
+  lancerChronoRush(13);
+}
+function lancerChronoRush(sec){stopChrono();const bar=$('#chrono-bar');if(!bar)return;const t0=performance.now();const boucle=now=>{const dt=(now-t0)/1000;bar.style.width=Math.max(0,1-dt/sec)*100+'%';if(dt>=sec){chronoId=null;rushRep(null,null);return;}chronoId=requestAnimationFrame(boucle);};chronoId=requestAnimationFrame(boucle);}
+function rushRep(btn,c){
+  if(rush.repondu)return;rush.repondu=true;stopChrono();
+  document.querySelectorAll('#choix button').forEach(b=>{b.disabled=true;if(b.textContent===rush.q.bonne)b.classList.add('bon');});
+  const bon=(c===rush.q.bonne);
+  if(bon){rush.score++;sfx.bon();gagnerPieces(2);setTimeout(rushRound,550);}
+  else{rush.vies--;sfx.faux();if(btn)btn.classList.add('faux');if(rush.vies<=0){setTimeout(rushFin,900);}else{setTimeout(rushRound,1100);}}
+}
+function rushFin(){
+  stopChrono();const record=rush.score>(S.rush||0);if(record)S.rush=rush.score;
+  S.xp+=rush.score*5;S.rating+=Math.floor(rush.score*1.5);
+  if(rush.score>=15)badge('rush15','Défi Éclair : 15 d\'affilée !');
+  save();(rush.score>=10?sfx.win:sfx.lose)();
+  scene().className='carte ecran centre';
+  scene().innerHTML=`
+    <div class="gros-emo">${record?'🏆':'⚡'}</div><h2>${record?'Nouveau record !':'Défi terminé'}</h2>
+    <div class="stat">${rush.score}</div>
+    <p class="sous">bonnes réponses ${record?'':' · record : '+(S.rush||0)}</p>
+    <div class="row" style="justify-content:center"><button class="btn" id="rej">🔁 Rejouer</button><button class="btn ghost" id="men">🏠 Menu</button></div>`;
+  $('#rej').onclick=rushStart;$('#men').onclick=menu;
 }
 
-displayQuestion();
-displayButtons();
-startTimer();
+/* =====================================================================
+   DÉFI DU JOUR
+   ===================================================================== */
+function aujourdhui(){const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
+function rngSeed(seed){let s=seed%2147483647;if(s<=0)s+=2147483646;return()=>((s=s*16807%2147483647)-1)/2147483646;}
+function daily(){
+  if(S.dailyDate===aujourdhui()){
+    scene().className='carte ecran centre';
+    scene().innerHTML=`<div class="gros-emo">📅</div><h2>Défi du jour déjà fait ✅</h2><p class="sous">Reviens demain pour continuer ta série ! 🔥 Série actuelle : <b>${S.streak}</b> jour(s).</p><button class="btn" id="men">🏠 Menu</button>`;
+    $('#men').onclick=menu;return;
+  }
+  const d=new Date();const rnd=rngSeed(d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate());
+  const all=toutes();const liste=[];const used={};
+  while(liste.length<5){const k=Math.floor(rnd()*all.length);if(!used[k]){used[k]=1;liste.push(all[k]);}}
+  jeuDaily={liste,i:0,bonnes:0};questionDaily();
+}
+let jeuDaily=null;
+function questionDaily(){
+  if(jeuDaily.i>=jeuDaily.liste.length)return finDaily();
+  const q=jeuDaily.liste[jeuDaily.i],choix=melange(q.choix);jeuDaily.q=q;
+  scene().className='carte ecran';
+  scene().innerHTML=`
+    <div class="barre"><i style="width:${jeuDaily.i/5*100}%"></i></div>
+    <div class="qtop"><span>📅 Défi du jour · Q${jeuDaily.i+1}/5</span><span>${NOMS_MAT[q.mat]}</span></div>
+    <div class="question">${esc(q.q)}</div>
+    <div class="choix" id="choix"></div><div class="explication" id="exp"></div><div id="suite" style="margin-top:14px"></div>`;
+  const cont=$('#choix');choix.forEach(c=>{const b=document.createElement('button');b.textContent=c;b.onclick=()=>{
+    if(jeuDaily.rep)return;jeuDaily.rep=true;
+    document.querySelectorAll('#choix button').forEach(x=>{x.disabled=true;if(x.textContent===q.bonne)x.classList.add('bon');});
+    const bon=c===q.bonne;if(bon){jeuDaily.bonnes++;sfx.bon();}else{b.classList.add('faux');sfx.faux();}
+    const exp=$('#exp');exp.style.display='block';exp.className='explication '+(bon?'bon':'faux');
+    exp.innerHTML=bon?`✅ <b>Bravo !</b> ${esc(q.exp)}`:`❌ Réponse : <b>${esc(q.bonne)}</b>. ${esc(q.exp)}`;
+    const s=$('#suite');const nb=document.createElement('button');nb.className='btn large';nb.textContent=jeuDaily.i===4?'Terminer 🏁':'Suivant →';nb.onclick=()=>{jeuDaily.rep=false;jeuDaily.i++;questionDaily();};s.appendChild(nb);
+  };cont.appendChild(b);});
+}
+function finDaily(){
+  const hier=new Date(Date.now()-86400000);const hierStr=hier.getFullYear()+'-'+(hier.getMonth()+1)+'-'+hier.getDate();
+  S.streak=(S.dailyDate===hierStr)?S.streak+1:1;S.dailyDate=aujourdhui();
+  const pieces=gagnerPieces(60+jeuDaily.bonnes*6);S.xp+=jeuDaily.bonnes*10;save();sfx.win();
+  scene().className='carte ecran centre';
+  scene().innerHTML=`<div class="gros-emo">📅</div><h2>Défi du jour terminé !</h2><div class="stat">${jeuDaily.bonnes}/5</div>
+    <p class="sous">+${pieces} 🪙 · 🔥 Série : <b>${S.streak}</b> jour(s)</p>
+    <button class="btn" id="men">🏠 Menu</button>`;
+  $('#men').onclick=menu;
+}
+
+/* =====================================================================
+   ZEN (choix matière)
+   ===================================================================== */
+function zenChoix(){
+  scene().className='carte ecran';
+  let html=`<div class="row" style="justify-content:space-between;align-items:center"><h2 style="margin:0">🧘 Entraînement zen</h2><button class="btn ghost" id="ret">← Menu</button></div>
+    <p class="sous" style="margin-top:10px">Pas de chrono, pas de stress : 10 questions avec les explications. Choisis ta matière.</p><div class="menu">`;
+  Object.keys(NOMS_MAT).forEach(k=>{const ile=ILES.find(i=>i.id===k);html+=`<button class="tuile" style="background:${ile.coul};${k==='histgeo'?'color:#3a2600':'color:#fff'}" data-m="${k}"><span class="emo">${ile.emo}</span> ${NOMS_MAT[k]} <small>${QUESTIONS[k].length} questions</small></button>`;});
+  html+=`<button class="tuile t-large" data-m="mix"><span class="emo">🎲</span> Mélange surprise <small>toutes matières</small></button></div>`;
+  scene().innerHTML=html;
+  $('#ret').onclick=menu;
+  document.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>zenJouer(b.dataset.m));
+}
+
+/* =====================================================================
+   BOUTIQUE
+   ===================================================================== */
+function boutique(){
+  majEntete();
+  scene().className='carte ecran';
+  let html=`<div class="row" style="justify-content:space-between;align-items:center"><h2 style="margin:0">🛍️ Boutique</h2><button class="btn ghost" id="ret">← Menu</button></div>
+    <p class="sous" style="margin-top:8px">Tu as <b>${S.coins} 🪙</b>. Gagne des pièces en jouant !</p>
+    <div class="section-titre">🦸 Skins (héros)</div><div class="boutique" id="b-skins"></div>
+    <div class="section-titre">🐾 Mascottes (bonus pièces)</div><div class="boutique" id="b-pets"></div>
+    <div class="section-titre">✨ Power-ups</div><div class="boutique" id="b-packs"></div>`;
+  scene().innerHTML=html;
+  $('#ret').onclick=menu;
+  const gs=$('#b-skins');
+  SKINS.forEach(sk=>{
+    const poss=S.skins.includes(sk.e), actif=S.skin===sk.e;
+    const el=document.createElement('div');el.className='article'+(actif?' actif':'');
+    el.innerHTML=`<div class="emo">${sk.e}</div><div class="perk">${sk.p===0?'offert':sk.p+' 🪙'}</div>
+      <button ${actif?'disabled':''}>${actif?'✔ équipé':poss?'Équiper':(S.coins>=sk.p?'Acheter':'🔒')}</button>`;
+    el.querySelector('button').onclick=()=>{
+      if(poss){S.skin=sk.e;} else if(S.coins>=sk.p){S.coins-=sk.p;S.skins.push(sk.e);S.skin=sk.e;sfx.piece();}
+      save();boutique();};
+    gs.appendChild(el);
+  });
+  const gp=$('#b-pets');
+  PETS.forEach(pt=>{
+    const poss=S.pets.includes(pt.e), actif=S.pet===pt.e;
+    const el=document.createElement('div');el.className='article'+(actif?' actif':'');
+    el.innerHTML=`<div class="emo">${pt.e}</div><div class="titre">${pt.nom}</div><div class="perk">${pt.perk}</div>
+      <button ${actif?'disabled':''}>${actif?'✔ actif':poss?'Activer':(S.coins>=pt.p?pt.p+' 🪙':'🔒 '+pt.p)}</button>`;
+    el.querySelector('button').onclick=()=>{
+      if(poss){S.pet=pt.e;} else if(S.coins>=pt.p){S.coins-=pt.p;S.pets.push(pt.e);S.pet=pt.e;sfx.piece();}
+      save();boutique();};
+    gp.appendChild(el);
+  });
+  const gk=$('#b-packs');
+  PACKS.forEach(pk=>{
+    const el=document.createElement('div');el.className='article';
+    el.innerHTML=`<div class="emo">${pk.emo}</div><div class="titre">${pk.nom}</div><div class="perk">+${pk.n} · possède ${S.power[pk.cle]}</div>
+      <button ${S.coins>=pk.p?'':'disabled'}>${pk.p} 🪙</button>`;
+    el.querySelector('button').onclick=()=>{if(S.coins>=pk.p){S.coins-=pk.p;S.power[pk.cle]+=pk.n;sfx.piece();save();boutique();}};
+    gk.appendChild(el);
+  });
+}
+
+/* ---------- Barre du haut + démarrage ---------- */
+document.getElementById('btn-menu').onclick=menu;
+document.getElementById('btn-son').onclick=function(){SON=!SON;this.textContent=SON?'🔊':'🔇';if(SON)sfx.bon();};
+
+/* Hook de test (jsdom) */
+window.__ILE__={QUESTIONS,ILES,piocher,toutes,get S(){return S;},set S(v){S=v;}};
+
+majEntete();
+menu();
 </script>
 </body>
 </html>
